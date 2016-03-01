@@ -5,19 +5,22 @@ import java.io.InputStreamReader;
 /**
  * Created by Deniel on 26.02.2016.
  */
-public class Logic {
+public class Logic{
 
-    public Logic() throws IOException {
+    public Logic() throws IOException, InterruptedException {
+        logic();
+    }
+    public void logic () throws IOException, InterruptedException {
         int button = 0;
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         while (button != 4) {
-            new Menu();
+            new Menu ();
             String s = reader.readLine();
 
             try {
                 button = Integer.parseInt(s);
             } catch (NumberFormatException e) {
-                System.out.println("НАЖИМАТЬ ТОЛЬКО ЦИФРЫ!1111!!!!11!");
+                System.out.println("Press only NUMBERS, YOU FUCKING IDIOT!!!");
                 continue;
             }
 
@@ -27,11 +30,15 @@ public class Logic {
                 case 2: System.out.println("Load order"); break;
                 case 3: System.out.println("Get order"); break;
                 case 4: System.exit(0); break;
-                default: System.out.println("Смотри, куда клацаешь своими корявками, ламер!");
+                default: System.out.println("I think, you need some 'format C:/' or tea with polonium. Just choose fucking number...");
             }
-            for ( int i = 0; i < 25; ++i )
+            for ( int i = 0; i < 25; ++i ) {
                 System.out.println();
+                Thread.sleep(100);
+            }
         }
     }
+
+
 }
 
