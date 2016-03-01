@@ -7,10 +7,9 @@ import java.io.InputStreamReader;
  */
 public class Logic {
 
-    int button = 0;
-    BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-
     public Logic() throws IOException {
+        int button = 0;
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         while (button != 4) {
             String s = reader.readLine();
 

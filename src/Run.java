@@ -5,7 +5,7 @@ import java.io.IOException;
  */
 public class Run {
     public static void main(String[] args) throws IOException {
-        Menu menu = new Menu();
-        Logic logic = new Logic();
+        new Menu();
+        new Logic();
     }
 }
