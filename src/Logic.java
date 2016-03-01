@@ -11,6 +11,7 @@ public class Logic {
         int button = 0;
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         while (button != 4) {
+            new Menu();
             String s = reader.readLine();
 
             try {
@@ -20,15 +21,16 @@ public class Logic {
                 continue;
             }
 
-            if (button == 1) {
-                System.out.println("Make order");
-            } else if (button == 2) {
-                System.out.println("Load order");
-            } else if (button == 3) {
-                System.out.println("Get order");
-            } else if (button == 4) {
-                System.exit(0);
-            } else System.out.println("Смотри, куда клацаешь своими корявками, ламер!");
+            switch (button)
+            {
+                case 1: System.out.println("Make order"); break;
+                case 2: System.out.println("Load order"); break;
+                case 3: System.out.println("Get order"); break;
+                case 4: System.exit(0); break;
+                default: System.out.println("Смотри, куда клацаешь своими корявками, ламер!");
+            }
+            for ( int i = 0; i < 25; ++i )
+                System.out.println();
         }
     }
 }
