@@ -8,20 +8,16 @@ import java.io.InputStreamReader;
 public class Logic {
 
     public void logic() throws IOException {
-        int button = 0;
+
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         Menu menu = new Menu();
+
+        int button = 0;
+
         while (button != 4) {
+
             menu.menu();
-            String s = reader.readLine();
-            try {
-                button = Integer.parseInt(s);
-            } catch (NumberFormatException e) {
-                System.out.println("Press only NUMBERS");
-                System.out.println("Press any key to continue...");
-                String r = reader.readLine();
-                continue;
-            }
+            button = menu.input();
 
             switch (button) {
                 case 1:
@@ -37,10 +33,11 @@ public class Logic {
                     System.exit(0);
                     break;
                 default:
-                    System.out.println("I think, you need some 'format C:/' or tea with polonium. Just choose number...");
+                    System.out.println("Just choose number from 1 to 4...");
             }
+
             System.out.println("Press any key to continue...");
-            String r = reader.readLine();
+            reader.readLine();
             for (int i = 0; i < 25; ++i) {
                 System.out.println();
             }
