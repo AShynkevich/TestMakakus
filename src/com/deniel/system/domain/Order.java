@@ -4,10 +4,10 @@ package com.deniel.system.domain;
  * Created by Deniel on 02.03.2016.
  */
 public class Order {
-    int id;
-    String orderName;
-    int amount;
-    int price;
+    private int id;
+    private String orderName;
+    private int amount;
+    private int price;
 
     public int getId() {
         return id;
