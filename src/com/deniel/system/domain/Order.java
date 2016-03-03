@@ -1,19 +1,22 @@
 package com.deniel.system.domain;
 
+import java.math.BigDecimal;
+import java.util.UUID;
+
 /**
  * Created by Deniel on 02.03.2016.
  */
 public class Order {
-    private int id;
+    private UUID id;
     private String orderName;
     private int amount;
-    private int price;
+    private BigDecimal price;
 
-    public int getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
@@ -33,11 +36,11 @@ public class Order {
         this.amount = amount;
     }
 
-    public int getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 }
