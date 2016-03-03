@@ -7,16 +7,16 @@ import java.util.UUID;
  * Created by Deniel on 02.03.2016.
  */
 public class Order {
-    private UUID id;
+    private String id;
     private String orderName;
     private int amount;
     private BigDecimal price;
 
-    public UUID getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(String id) {
         this.id = id;
     }
 
