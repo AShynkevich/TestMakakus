@@ -1,5 +1,6 @@
 package com.deniel.system.ui;
 
+import com.deniel.system.domain.OrderAction;
 import com.deniel.system.util.Menu;
 
 import java.io.BufferedReader;
@@ -16,6 +17,7 @@ public class Logic {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
         Menu menu = new Menu();
+        OrderAction action = new OrderAction();
 
         while (button != 4) {
             menu.menu();
@@ -25,6 +27,11 @@ public class Logic {
             switch (button) {
                 case 1:
                     System.out.println("Make order");
+
+                    action.set();
+
+                    action.get();
+
                     break;
                 case 2:
                     System.out.println("Load order");
