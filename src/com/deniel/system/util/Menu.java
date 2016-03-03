@@ -17,7 +17,7 @@ public class Menu {
         System.out.print("Make a choice: ");
     }
 
-    public int input() throws IOException{
+    public int input() throws IOException {
         int button = 0;
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
@@ -26,7 +26,7 @@ public class Menu {
         try {
             button = Integer.parseInt(s);
         } catch (NumberFormatException e) {
-            System.out.println();
+            System.out.println("That key is not allowed here.");
         }
         return button;
     }

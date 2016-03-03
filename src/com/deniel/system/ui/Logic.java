@@ -12,15 +12,14 @@ import java.io.InputStreamReader;
 public class Logic {
 
     public void logic() throws IOException {
-
+        int button = 0;
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+
         Menu menu = new Menu();
 
-        int button = 0;
-
         while (button != 4) {
-
             menu.menu();
+
             button = menu.input();
 
             switch (button) {
@@ -41,7 +40,9 @@ public class Logic {
             }
 
             System.out.println("Press any key to continue...");
+
             reader.readLine();
+
             for (int i = 0; i < 25; ++i) {
                 System.out.println();
             }
