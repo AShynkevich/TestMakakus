@@ -1,6 +1,5 @@
 package com.deniel.system.ui;
 
-import com.deniel.system.domain.OrderAction;
 import com.deniel.system.util.Menu;
 
 import java.io.BufferedReader;
@@ -28,9 +27,9 @@ public class Logic {
                 case 1:
                     System.out.println("Make order");
 
-                    action.set();
+                    action.inputOrder();
 
-                    action.get();
+                    action.outputOrder();
 
                     break;
                 case 2:
