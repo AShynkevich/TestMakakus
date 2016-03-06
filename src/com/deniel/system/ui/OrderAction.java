@@ -22,34 +22,27 @@ public class OrderAction {
         System.out.println("Set order name");
         order.setOrderName(reader.readLine());
 
-        System.out.println("Set amount");
-
-        boolean trigger = true;
-        while (trigger) {
+        while (true) {
             try {
+                System.out.println("Set amount");
                 order.setAmount(Integer.parseInt(reader.readLine()));
-                trigger = false;
                 break;
             } catch (NumberFormatException e) {
                 System.out.println("This key is not allowed here. Try again.");
             }
         }
 
-        System.out.println("Set price");
-
-        boolean trigger2 = true;
-        while (trigger2) {
+        while (true) {
             try {
+                System.out.println("Set price");
                 String price = reader.readLine();
                 BigDecimal bigDecimal = new BigDecimal(price.replaceAll(",", ""));
                 order.setPrice(bigDecimal);
-                trigger2 = false;
                 break;
             } catch (NumberFormatException e) {
                 System.out.println("This key is not allowed here.");
             }
         }
-
 
     }
 
