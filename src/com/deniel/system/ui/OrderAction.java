@@ -13,6 +13,7 @@ public class OrderAction {
 
     private BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
     Order order = new Order();
+    Validation validation = new Validation();
 
     public void inputOrder () throws IOException {
 
@@ -25,7 +26,7 @@ public class OrderAction {
         while (true) {
             try {
                 System.out.println("Set amount");
-                order.setAmount(Integer.parseInt(reader.readLine()));
+                order.setAmount(Integer.parseInt(validation.validation()));
                 break;
             } catch (NumberFormatException e) {
                 System.out.println("This key is not allowed here. Try again.");
@@ -35,7 +36,7 @@ public class OrderAction {
         while (true) {
             try {
                 System.out.println("Set price");
-                String price = reader.readLine();
+                String price = validation.validation();
                 BigDecimal bigDecimal = new BigDecimal(price.replaceAll(",", ""));
                 order.setPrice(bigDecimal);
                 break;
