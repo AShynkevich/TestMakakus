@@ -1,6 +1,8 @@
 package com.deniel.system.ui;
 
 import com.deniel.system.domain.Order;
+import com.deniel.system.util.Validation;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -11,40 +13,24 @@ import java.math.BigDecimal;
  */
 public class OrderAction {
 
+    public static final String ONLY_NUMBER_PATTERN = "\\d";
+    public static final String FLOAT_PATTERN = "\\d+(\\.\\d*)?";
     private BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
     Order order = new Order();
-    Validation validation = new Validation();
 
     public void inputOrder () throws IOException {
 
-        System.out.println("Set id");
+        System.out.println("Input Id: ");
         order.setId(reader.readLine());
 
-        System.out.println("Set order name");
+        System.out.println("Input order name: ");
         order.setOrderName(reader.readLine());
 
-        while (true) {
-            try {
-                System.out.println("Set amount");
-                order.setAmount(Integer.parseInt(validation.validation()));
-                break;
-            } catch (NumberFormatException e) {
-                System.out.println("This key is not allowed here. Try again.");
-            }
-        }
+        String value = Validation.getValidString("Input amount [example: 50; 2]: ", ONLY_NUMBER_PATTERN);
+        order.setAmount(Integer.parseInt(value));
 
-        while (true) {
-            try {
-                System.out.println("Set price");
-                String price = validation.validation();
-                BigDecimal bigDecimal = new BigDecimal(price.replaceAll(",", ""));
-                order.setPrice(bigDecimal);
-                break;
-            } catch (NumberFormatException e) {
-                System.out.println("This key is not allowed here.");
-            }
-        }
-
+        value = Validation.getValidString("Input price [example: 30; 20.5]: ", FLOAT_PATTERN);
+        order.setPrice(new BigDecimal(value));
     }
 
     public void outputOrder() {
