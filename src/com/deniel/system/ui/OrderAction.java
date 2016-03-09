@@ -13,7 +13,7 @@ import java.math.BigDecimal;
  */
 public class OrderAction {
 
-    public static final String ONLY_NUMBER_PATTERN = "\\d";
+    public static final String ONLY_NUMBER_PATTERN = "\\d+";
     public static final String FLOAT_PATTERN = "\\d+(\\.\\d*)?";
     private BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
     Order order = new Order();
@@ -35,10 +35,7 @@ public class OrderAction {
 
     public void outputOrder() {
         System.out.println("Your order is:");
-        System.out.println("ID: " + order.getId());
-        System.out.println("Name: " + order.getOrderName());
-        System.out.println("Amount: " + order.getAmount());
-        System.out.println("Price" + order.getPrice());
+        System.out.println(order.toString());
     }
 
 

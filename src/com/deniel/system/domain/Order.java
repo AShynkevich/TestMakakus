@@ -43,4 +43,10 @@ public class Order {
     public void setPrice(BigDecimal price) {
         this.price = price;
     }
+
+    @Override
+
+    public String toString () {
+        return "ID: " + id + " Name: " + orderName + " Amount: " + amount + " Price: " + price;
+    }
 }
