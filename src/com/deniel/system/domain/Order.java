@@ -2,11 +2,12 @@ package com.deniel.system.domain;
 
 import java.math.BigDecimal;
 import java.util.UUID;
+import java.io.Serializable;
 
 /**
  * Created by Deniel on 02.03.2016.
  */
-public class Order {
+public class Order implements Serializable {
     private String id;
     private String orderName;
     private int amount;

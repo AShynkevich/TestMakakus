@@ -29,11 +29,12 @@ public class Logic {
 
                     action.inputOrder();
 
-                    action.outputOrder();
-
                     break;
                 case 2:
                     System.out.println("Load order");
+
+                    action.outputOrder();
+
                     break;
                 case 3:
                     System.out.println("Get order");
