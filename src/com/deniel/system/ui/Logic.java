@@ -11,7 +11,7 @@ import java.io.InputStreamReader;
  */
 public class Logic {
 
-    public void logic() throws IOException, ClassNotFoundException {
+    public void logic() throws IOException {
         int button = 0;
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 

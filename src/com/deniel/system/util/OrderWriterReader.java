@@ -10,10 +10,10 @@ import java.io.*;
 public class OrderWriterReader {
 
     public void write(Order order) throws IOException {
-        File fw = new File("src/demo.dat");
-        ObjectOutputStream ostream =
-                new ObjectOutputStream(
-                        new FileOutputStream(fw));
+        File dir = new File("orders");
+        dir.mkdir();
+        File writer = new File("orders/demo.dat");
+        ObjectOutputStream ostream = new ObjectOutputStream(new FileOutputStream(writer));
         try {
             ostream.writeObject(order);
         } catch (IOException e) {
@@ -24,12 +24,12 @@ public class OrderWriterReader {
         }
     }
 
-    public void reader() throws IOException, ClassNotFoundException {
-        File fr = new File("src/demo.dat");
-        try (ObjectInputStream istream = new ObjectInputStream(new FileInputStream(fr))) {
+    public void reader() throws IOException {
+        File reader = new File("orders/demo.dat");
+        try (ObjectInputStream istream = new ObjectInputStream(new FileInputStream(reader))) {
             Order unknown = (Order) istream.readObject();
             System.out.println(unknown);
-        } catch (IOException e) {
+        } catch (IOException | ClassNotFoundException e) {
             System.err.println(e);
             System.err.println("IO Error");
         }
