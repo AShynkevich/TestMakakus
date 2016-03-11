@@ -37,7 +37,7 @@ public class OrderAction {
         orderWriterReader.write(order);
     }
 
-    public void outputOrder() throws IOException {
+    public void outputOrder() throws IOException, ClassNotFoundException {
         System.out.println("Your order is:");
         orderWriterReader.reader();
 
