@@ -9,27 +9,24 @@ import java.io.*;
  */
 public class OrderWriterReader {
 
-    public void write(Order order) throws IOException {
+    public void write(Order order) {
         File dir = new File("orders");
         dir.mkdir();
         File writer = new File("orders/demo.dat");
-        ObjectOutputStream ostream = new ObjectOutputStream(new FileOutputStream(writer));
-        try {
+
+        try (ObjectOutputStream ostream = new ObjectOutputStream(new FileOutputStream(writer))) {
             ostream.writeObject(order);
         } catch (IOException e) {
             System.err.println(e);
         }
-        finally {
-            ostream.close();
-        }
     }
 
-    public void reader() throws IOException {
+    public void reader() {
         File reader = new File("orders/demo.dat");
         try (ObjectInputStream istream = new ObjectInputStream(new FileInputStream(reader))) {
             Order unknown = (Order) istream.readObject();
             System.out.println(unknown);
-        } catch (IOException | ClassNotFoundException e) {
+        } catch (Exception e) {
             System.err.println(e);
             System.err.println("IO Error");
         }
