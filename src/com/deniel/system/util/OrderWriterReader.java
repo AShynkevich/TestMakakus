@@ -1,6 +1,7 @@
 package com.deniel.system.util;
 
 import com.deniel.system.domain.Order;
+import org.apache.log4j.Logger;
 
 import java.io.*;
 
@@ -8,6 +9,7 @@ import java.io.*;
  * Created by Deniel on 11.03.2016.
  */
 public class OrderWriterReader {
+    private static final Logger LOGGER = Logger.getLogger(OrderWriterReader.class);
 
     public void write(Order order) {
         File dir = new File("orders");
@@ -17,7 +19,7 @@ public class OrderWriterReader {
         try (ObjectOutputStream ostream = new ObjectOutputStream(new FileOutputStream(writer))) {
             ostream.writeObject(order);
         } catch (IOException e) {
-            System.err.println(e);
+            LOGGER.error("Write object error: ", e);
         }
     }
 
@@ -27,8 +29,7 @@ public class OrderWriterReader {
             Order unknown = (Order) istream.readObject();
             System.out.println(unknown);
         } catch (Exception e) {
-            System.err.println(e);
-            System.err.println("IO Error");
+            LOGGER.error("Read object error: ", e);
         }
     }
 }
