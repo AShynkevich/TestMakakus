@@ -17,7 +17,6 @@ public class Validation {
     private Validation() {
     }
 
-    public static final Logger logger = Logger.getLogger(Validation.class);
 
     public static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
@@ -31,9 +30,8 @@ public class Validation {
                     return line;
                 }
                 System.out.println("This key is not allowed here");
-                logger.debug ("This key is not allowed here");
             } catch (IOException e) {
-                logger.error(e);
+                System.out.println(e);
             }
         }
     }

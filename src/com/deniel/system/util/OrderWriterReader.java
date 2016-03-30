@@ -13,7 +13,6 @@ import java.util.List;
  * Created by Deniel on 11.03.2016.
  */
 public class OrderWriterReader {
-    private static final Logger LOGGER = Logger.getLogger(OrderWriterReader.class);
 
     public void write(Order order) {
         String fileName = "orders/demo.dat";
@@ -31,8 +30,6 @@ public class OrderWriterReader {
                 System.err.println(e);
             }
         } else {
-
-<<<<<<< HEAD
             try (ObjectInputStream istream = new ObjectInputStream(new FileInputStream(fileName))) {
                 ArrayList<Order> collection = (ArrayList) istream.readObject();
                 collection.add(order);
@@ -46,58 +43,45 @@ public class OrderWriterReader {
                 System.err.println(e);
                 System.err.println("IO Error");
             }
-=======
-        try (ObjectOutputStream ostream = new ObjectOutputStream(new FileOutputStream(writer))) {
-            ostream.writeObject(order);
-        } catch (IOException e) {
-            LOGGER.error("Write object error: ", e);
->>>>>>> origin/master
         }
     }
 
     public void reader() {
         File reader = new File("orders/demo.dat");
         try (ObjectInputStream istream = new ObjectInputStream(new FileInputStream(reader))) {
-<<<<<<< HEAD
             ArrayList<Order> collection = (ArrayList) istream.readObject();
             String answer = whatToShow();
             if (answer.equals("ALL")) {
                 System.out.println(collection);
             }
             for (Order pair : collection) {
-                if(pair.getId().equals(answer)) {
+                if (pair.getId().equals(answer)) {
                     System.out.println(pair);
                 }
             }
-        }
-         catch (Exception e) {
+        } catch (Exception e) {
             System.err.println(e);
             System.err.println("IO Error");
-=======
-            Order unknown = (Order) istream.readObject();
-            System.out.println(unknown);
-        } catch (Exception e) {
-            LOGGER.error("Read object error: ", e);
->>>>>>> origin/master
         }
     }
 
-    public ArrayList<Order> sort (ArrayList<Order> list) {
+    public ArrayList<Order> sort(ArrayList<Order> list) {
         for (int i = 0; i < list.size(); i++) {
             for (int j = 0; j < i; j++) {
                 if (list.get(j).getId().compareTo(list.get(i).getId()) > 0) {
                     Order tmp = list.get(i);
-                    list.set(i, list.get( j ));
+                    list.set(i, list.get(j));
                     list.set(j, tmp);
                 }
             }
         }
         return list;
     }
-    public String whatToShow () throws IOException {
+
+    public String whatToShow() throws IOException {
         System.out.println("Enter your order number or type ALL to see all of orders");
-        BufferedReader keyRead = new BufferedReader(new InputStreamReader(System.in));
-        String answer = keyRead.readLine();
+        BufferedReader keyReader = new BufferedReader(new InputStreamReader(System.in));
+        String answer = keyReader.readLine();
         return answer;
     }
 }
