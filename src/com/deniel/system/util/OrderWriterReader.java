@@ -1,6 +1,7 @@
 package com.deniel.system.util;
 
 import com.deniel.system.domain.Order;
+import org.apache.log4j.Logger;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -12,6 +13,7 @@ import java.util.List;
  * Created by Deniel on 11.03.2016.
  */
 public class OrderWriterReader {
+    private static final Logger LOGGER = Logger.getLogger(OrderWriterReader.class);
 
     public void write(Order order) {
         String fileName = "orders/demo.dat";
@@ -30,6 +32,7 @@ public class OrderWriterReader {
             }
         } else {
 
+<<<<<<< HEAD
             try (ObjectInputStream istream = new ObjectInputStream(new FileInputStream(fileName))) {
                 ArrayList<Order> collection = (ArrayList) istream.readObject();
                 collection.add(order);
@@ -43,12 +46,19 @@ public class OrderWriterReader {
                 System.err.println(e);
                 System.err.println("IO Error");
             }
+=======
+        try (ObjectOutputStream ostream = new ObjectOutputStream(new FileOutputStream(writer))) {
+            ostream.writeObject(order);
+        } catch (IOException e) {
+            LOGGER.error("Write object error: ", e);
+>>>>>>> origin/master
         }
     }
 
     public void reader() {
         File reader = new File("orders/demo.dat");
         try (ObjectInputStream istream = new ObjectInputStream(new FileInputStream(reader))) {
+<<<<<<< HEAD
             ArrayList<Order> collection = (ArrayList) istream.readObject();
             String answer = whatToShow();
             if (answer.equals("ALL")) {
@@ -63,6 +73,12 @@ public class OrderWriterReader {
          catch (Exception e) {
             System.err.println(e);
             System.err.println("IO Error");
+=======
+            Order unknown = (Order) istream.readObject();
+            System.out.println(unknown);
+        } catch (Exception e) {
+            LOGGER.error("Read object error: ", e);
+>>>>>>> origin/master
         }
     }
 

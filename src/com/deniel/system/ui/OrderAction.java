@@ -3,6 +3,7 @@ package com.deniel.system.ui;
 import com.deniel.system.domain.Order;
 import com.deniel.system.util.OrderWriterReader;
 import com.deniel.system.util.Validation;
+import org.apache.log4j.Logger;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,7 +14,6 @@ import java.math.BigDecimal;
  * Created by Deniel on 03.03.2016.
  */
 public class OrderAction {
-
     public static final String ONLY_NUMBER_PATTERN = "\\d+";
     public static final String FLOAT_PATTERN = "\\d+(\\.\\d*)?";
     private BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
@@ -40,6 +40,4 @@ public class OrderAction {
     public void outputOrder() throws IOException {
         orderWriterReader.reader();
     }
-
-
 }
