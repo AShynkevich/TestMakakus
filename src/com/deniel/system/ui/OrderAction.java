@@ -38,9 +38,7 @@ public class OrderAction {
     }
 
     public void outputOrder() throws IOException {
-        System.out.println("Your order is:");
         orderWriterReader.reader();
-
     }
 
 
