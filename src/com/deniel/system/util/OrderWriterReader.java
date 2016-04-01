@@ -13,59 +13,43 @@ import java.util.List;
  * Created by Deniel on 11.03.2016.
  */
 public class OrderWriterReader {
+    private static final String FILE_NAME = "orders/demo.dat";
 
     public void write(Order order) {
-        String fileName = "orders/demo.dat";
 
         File dir = new File("orders");
         dir.mkdir();
-        File writer = new File(fileName);
-        if (!writer.exists()) {
-            try (ObjectOutputStream ostream = new ObjectOutputStream(new FileOutputStream(writer))) {
-                ArrayList<Order> collection = new ArrayList<>();
-                collection.add(order);
-                sort(collection);
-                ostream.writeObject(collection);
-            } catch (IOException e) {
-                System.err.println(e);
-            }
-        } else {
-            try (ObjectInputStream istream = new ObjectInputStream(new FileInputStream(fileName))) {
-                ArrayList<Order> collection = (ArrayList) istream.readObject();
-                collection.add(order);
-                sort(collection);
-                try (ObjectOutputStream ostream = new ObjectOutputStream(new FileOutputStream(writer))) {
-                    ostream.writeObject(collection);
-                } catch (IOException e) {
-                    System.err.println(e);
-                }
-            } catch (Exception e) {
-                System.err.println(e);
-                System.err.println("IO Error");
-            }
+        File writer = new File(FILE_NAME);
+        List<Order> collection = (!writer.exists()) ? new ArrayList<Order>() : readAll();
+        collection.add(order);
+        sort(collection);
+        writeStream(writer, collection);
+    }
+
+
+    public void writeStream(File writer, List<Order> collection) {
+        try (ObjectOutputStream ostream = new ObjectOutputStream(new FileOutputStream(writer))) {
+            ostream.writeObject(collection);
+        } catch (IOException e) {
+            System.err.println(e);
         }
     }
 
-    public void reader() {
-        File reader = new File("orders/demo.dat");
+
+    public List<Order> readAll() {
+        File reader = new File(FILE_NAME);
+        List<Order> returnList = new ArrayList<>();
         try (ObjectInputStream istream = new ObjectInputStream(new FileInputStream(reader))) {
-            ArrayList<Order> collection = (ArrayList) istream.readObject();
-            String answer = whatToShow();
-            if (answer.equals("ALL")) {
-                System.out.println(collection);
-            }
-            for (Order pair : collection) {
-                if (pair.getId().equals(answer)) {
-                    System.out.println(pair);
-                }
-            }
+            returnList = (List<Order>) istream.readObject();
         } catch (Exception e) {
             System.err.println(e);
             System.err.println("IO Error");
         }
+        return returnList;
     }
 
-    public ArrayList<Order> sort(ArrayList<Order> list) {
+
+    public List<Order> sort(List<Order> list) {
         for (int i = 0; i < list.size(); i++) {
             for (int j = 0; j < i; j++) {
                 if (list.get(j).getId().compareTo(list.get(i).getId()) > 0) {
@@ -77,11 +61,7 @@ public class OrderWriterReader {
         }
         return list;
     }
-
-    public String whatToShow() throws IOException {
-        System.out.println("Enter your order number or type ALL to see all of orders");
-        BufferedReader keyReader = new BufferedReader(new InputStreamReader(System.in));
-        String answer = keyReader.readLine();
-        return answer;
-    }
 }
+
+
+
