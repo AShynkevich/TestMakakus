@@ -35,35 +35,7 @@ public class OrderAction {
         value = Validation.getValidString("Input price [example: 30; 20.5]: ", FLOAT_PATTERN);
         order.setPrice(new BigDecimal(value));
 
-        orderWriterReader.write(order);
-    }
-
-    public void outputOrder() throws IOException {
-        List<Order> collection = orderWriterReader.readAll();
-        String answer = whatToShow();
-
-        if (answer.equals("ALL")) {
-            System.out.println(collection);
-        }
-
-        for (Order pair : collection) {
-            if (pair.getId().equals(answer)) {
-                System.out.println(pair);
-            }
-        }
-    }
-
-    private String whatToShow() {
-        System.out.println("Enter your order number or type ALL to see all of orders");
-        BufferedReader keyReader = new BufferedReader(new InputStreamReader(System.in));
-        String answer = null;
-        try {
-            answer = keyReader.readLine();
-            return answer;
-        } catch (IOException e) {
-            System.out.println(e);
-        }
-        return answer;
+        orderWriterReader.writeFile(order);
     }
 }
 

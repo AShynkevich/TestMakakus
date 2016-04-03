@@ -1,6 +1,7 @@
 package com.deniel.system.util;
 
 import com.deniel.system.domain.Order;
+import com.deniel.system.ui.OrderAction;
 import org.apache.log4j.Logger;
 
 import java.io.*;
@@ -15,14 +16,14 @@ import java.util.List;
 public class OrderWriterReader {
     private static final String FILE_NAME = "orders/demo.dat";
 
-    public void write(Order order) {
+    public void writeFile(Order order) {
 
         File dir = new File("orders");
         dir.mkdir();
         File writer = new File(FILE_NAME);
-        List<Order> collection = (!writer.exists()) ? new ArrayList<Order>() : readAll();
+        List<Order> collection = (!writer.exists()) ? new ArrayList<Order>() : readFile();
         collection.add(order);
-        sort(collection);
+        sortCollection(collection);
         writeStream(writer, collection);
     }
 
@@ -36,7 +37,7 @@ public class OrderWriterReader {
     }
 
 
-    public List<Order> readAll() {
+    public List<Order> readFile() {
         File reader = new File(FILE_NAME);
         List<Order> returnList = new ArrayList<>();
         try (ObjectInputStream istream = new ObjectInputStream(new FileInputStream(reader))) {
@@ -49,7 +50,7 @@ public class OrderWriterReader {
     }
 
 
-    public List<Order> sort(List<Order> list) {
+    public List<Order> sortCollection(List<Order> list) {
         for (int i = 0; i < list.size(); i++) {
             for (int j = 0; j < i; j++) {
                 if (list.get(j).getId().compareTo(list.get(i).getId()) > 0) {
@@ -60,6 +61,28 @@ public class OrderWriterReader {
             }
         }
         return list;
+    }
+
+    public void loadOrder() throws IOException {
+        List<Order> collection = new ArrayList<>(readFile());
+        Menu menu = new Menu();
+        String answer = menu.whatOrderToLoad();
+        boolean x = true;
+
+        for (Order pair : collection) {
+            if (pair.getId().equals(answer)) {
+                System.out.println(pair);
+                x = false;
+            }
+        }
+        if (x) {
+            System.out.println("Order not found!");
+        }
+    }
+
+    public void loadAllOrders() throws IOException {
+        List<Order> collection = new ArrayList<>(readFile());
+        System.out.println(collection);
     }
 }
 

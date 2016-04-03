@@ -1,6 +1,8 @@
 package com.deniel.system.ui;
 
+import com.deniel.system.domain.Order;
 import com.deniel.system.util.Menu;
+import com.deniel.system.util.OrderWriterReader;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,18 +14,19 @@ import java.io.InputStreamReader;
 public class Logic {
 
     public void logic() throws IOException {
-        int button = 0;
+        int key = 0;
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
         Menu menu = new Menu();
         OrderAction action = new OrderAction();
+        OrderWriterReader writerReader = new OrderWriterReader();
 
-        while (button != 4) {
+        while (key != 5) {
             menu.menu();
 
-            button = menu.input();
+            key = menu.pressKey();
 
-            switch (button) {
+            switch (key) {
                 case 1:
                     System.out.println("Make order");
 
@@ -31,15 +34,22 @@ public class Logic {
 
                     break;
                 case 2:
-                    System.out.println("Load order");
+                    System.out.println("All orders:");
 
-                    action.outputOrder();
+                    writerReader.loadAllOrders();
 
                     break;
                 case 3:
+                    System.out.println("Enter order ID:");
+
+                    writerReader.loadOrder();
+
+                    break;
+
+                case 4:
                     System.out.println("Get order");
                     break;
-                case 4:
+                case 5:
                     System.exit(0);
                     break;
                 default:
