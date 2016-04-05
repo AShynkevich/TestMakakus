@@ -36,7 +36,7 @@ public class Logic {
                 case 2:
                     System.out.println("All orders:");
 
-                    System.out.println(writerReader.loadAllOrders());
+                    System.out.println(writerReader.readAll());
 
                     break;
                 case 3:

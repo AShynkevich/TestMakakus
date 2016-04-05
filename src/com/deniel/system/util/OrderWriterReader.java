@@ -73,11 +73,6 @@ public class OrderWriterReader {
         }
         return order;
     }
-
-    public List<Order> loadAllOrders() throws IOException {
-        List<Order> collection = readAll();
-        return collection;
-    }
 }
 
 
