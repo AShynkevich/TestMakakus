@@ -20,11 +20,11 @@ public class OrderWriterReader {
 
         File dir = new File("orders");
         dir.mkdir();
-        File writer = new File(FILE_NAME);
-        List<Order> collection = (!writer.exists()) ? new ArrayList<Order>() : readFile();
+        File collectionFile = new File(FILE_NAME);
+        List<Order> collection = (!collectionFile.exists()) ? new ArrayList<Order>() : readAll();
         collection.add(order);
         sortCollection(collection);
-        writeStream(writer, collection);
+        writeStream(collectionFile, collection);
     }
 
 
@@ -37,10 +37,10 @@ public class OrderWriterReader {
     }
 
 
-    public List<Order> readFile() {
-        File reader = new File(FILE_NAME);
+    public List<Order> readAll() {
+        File collectionFile = new File(FILE_NAME);
         List<Order> returnList = new ArrayList<>();
-        try (ObjectInputStream istream = new ObjectInputStream(new FileInputStream(reader))) {
+        try (ObjectInputStream istream = new ObjectInputStream(new FileInputStream(collectionFile))) {
             returnList = (List<Order>) istream.readObject();
         } catch (Exception e) {
             System.err.println(e);
@@ -63,26 +63,20 @@ public class OrderWriterReader {
         return list;
     }
 
-    public void loadOrder() throws IOException {
-        List<Order> collection = new ArrayList<>(readFile());
-        Menu menu = new Menu();
-        String answer = menu.whatOrderToLoad();
-        boolean x = true;
-
+    public Order getOrderById(String ID) throws IOException {
+        List<Order> collection = readAll();
+        Order order = new Order();
         for (Order pair : collection) {
-            if (pair.getId().equals(answer)) {
-                System.out.println(pair);
-                x = false;
+            if (pair.getId().equals(ID)) {
+                order = pair;
             }
         }
-        if (x) {
-            System.out.println("Order not found!");
-        }
+        return order;
     }
 
-    public void loadAllOrders() throws IOException {
-        List<Order> collection = new ArrayList<>(readFile());
-        System.out.println(collection);
+    public List<Order> loadAllOrders() throws IOException {
+        List<Order> collection = readAll();
+        return collection;
     }
 }
 

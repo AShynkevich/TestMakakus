@@ -22,25 +22,25 @@ public class Menu {
     }
 
     public int pressKey() throws IOException {
-        int button = 0;
+        int key = 0;
         String s = reader.readLine();
         try {
-            button = Integer.parseInt(s);
+            key = Integer.parseInt(s);
         } catch (NumberFormatException e) {
             System.out.println("That key is not allowed here.");
         }
-        return button;
+        return key;
     }
 
-    public String whatOrderToLoad() {
-        String answer = null;
+    public String getOrderID() {
+        String ID = null;
         try {
-            answer = reader.readLine();
-            return answer;
+            ID = reader.readLine();
+            return ID;
         } catch (IOException e) {
             System.out.println(e);
         }
-        return answer;
+        return ID;
     }
 }
 

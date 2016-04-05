@@ -36,13 +36,21 @@ public class Logic {
                 case 2:
                     System.out.println("All orders:");
 
-                    writerReader.loadAllOrders();
+                    System.out.println(writerReader.loadAllOrders());
 
                     break;
                 case 3:
                     System.out.println("Enter order ID:");
 
-                    writerReader.loadOrder();
+                    String ID = menu.getOrderID();
+
+                    Order order = writerReader.getOrderById(ID);
+
+                    if (order.getId() == null) {
+                        System.out.println("Order not found!");
+                    } else {
+                        System.out.println(order);
+                    }
 
                     break;
 
