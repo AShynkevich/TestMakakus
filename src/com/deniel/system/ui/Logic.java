@@ -3,7 +3,6 @@ package com.deniel.system.ui;
 import com.deniel.system.domain.Order;
 import com.deniel.system.util.Menu;
 import com.deniel.system.util.OrderWriterReader;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -44,7 +43,7 @@ public class Logic {
 
                     String ID = menu.getOrderID();
 
-                    Order order = writerReader.getOrderById(ID);
+                    Order order = writerReader.read(ID);
 
                     if (order.getId() == null) {
                         System.out.println("Order not found!");
@@ -73,7 +72,5 @@ public class Logic {
             }
         }
     }
-
-
 }
 

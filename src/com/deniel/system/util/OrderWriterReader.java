@@ -1,13 +1,8 @@
 package com.deniel.system.util;
 
 import com.deniel.system.domain.Order;
-import com.deniel.system.ui.OrderAction;
-import org.apache.log4j.Logger;
-
 import java.io.*;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -16,7 +11,7 @@ import java.util.List;
 public class OrderWriterReader {
     private static final String FILE_NAME = "orders/demo.dat";
 
-    public void writeFile(Order order) {
+    public void create(Order order) {
 
         File dir = new File("orders");
         dir.mkdir();
@@ -27,15 +22,13 @@ public class OrderWriterReader {
         writeStream(collectionFile, collection);
     }
 
-
-    public void writeStream(File writer, List<Order> collection) {
-        try (ObjectOutputStream ostream = new ObjectOutputStream(new FileOutputStream(writer))) {
+    public void writeStream(File file, List<Order> collection) {
+        try (ObjectOutputStream ostream = new ObjectOutputStream(new FileOutputStream(file))) {
             ostream.writeObject(collection);
         } catch (IOException e) {
             System.err.println(e);
         }
     }
-
 
     public List<Order> readAll() {
         File collectionFile = new File(FILE_NAME);
@@ -49,6 +42,16 @@ public class OrderWriterReader {
         return returnList;
     }
 
+    public Order read(String ID) throws IOException {
+        List<Order> collection = readAll();
+        Order order = new Order();
+        for (Order pair : collection) {
+            if (pair.getId().equals(ID)) {
+                order = pair;
+            }
+        }
+        return order;
+    }
 
     public List<Order> sortCollection(List<Order> list) {
         for (int i = 0; i < list.size(); i++) {
@@ -63,15 +66,12 @@ public class OrderWriterReader {
         return list;
     }
 
-    public Order getOrderById(String ID) throws IOException {
-        List<Order> collection = readAll();
-        Order order = new Order();
-        for (Order pair : collection) {
-            if (pair.getId().equals(ID)) {
-                order = pair;
-            }
-        }
-        return order;
+    public Order update() {
+        return null;
+    }
+
+    public Order delete() {
+        return null;
     }
 }
 

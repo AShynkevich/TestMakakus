@@ -1,7 +1,6 @@
 package com.deniel.system.domain;
 
 import java.math.BigDecimal;
-import java.util.UUID;
 import java.io.Serializable;
 
 /**
