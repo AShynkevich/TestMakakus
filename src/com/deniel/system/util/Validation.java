@@ -9,10 +9,8 @@ import java.util.regex.Pattern;
  * Created by alexshaman on 3/7/16.
  */
 public class Validation {
-    private Validation() {
-    }
 
-    public static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+    private static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
     public static String getValidString(String message, String regexp) {
         Pattern pattern = Pattern.compile(regexp);
@@ -28,5 +26,8 @@ public class Validation {
                 System.out.println(e);
             }
         }
+    }
+
+    private Validation() {
     }
 }

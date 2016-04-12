@@ -1,6 +1,7 @@
 package com.deniel.system.util;
 
 import com.deniel.system.domain.Order;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,12 +23,23 @@ public class OrderWriterReader {
         writeStream(collectionFile, collection);
     }
 
-    public void writeStream(File file, List<Order> collection) {
-        try (ObjectOutputStream ostream = new ObjectOutputStream(new FileOutputStream(file))) {
-            ostream.writeObject(collection);
-        } catch (IOException e) {
-            System.err.println(e);
+    public Order read(String ID) throws IOException {
+        List<Order> collection = readAll();
+        Order order = new Order();
+        for (Order pair : collection) {
+            if (pair.getId().equals(ID)) {
+                order = pair;
+            }
         }
+        return order;
+    }
+
+    private Order update() {
+        return null;
+    }
+
+    private Order delete() {
+        return null;
     }
 
     public List<Order> readAll() {
@@ -42,18 +54,15 @@ public class OrderWriterReader {
         return returnList;
     }
 
-    public Order read(String ID) throws IOException {
-        List<Order> collection = readAll();
-        Order order = new Order();
-        for (Order pair : collection) {
-            if (pair.getId().equals(ID)) {
-                order = pair;
-            }
+    private void writeStream(File file, List<Order> collection) {
+        try (ObjectOutputStream ostream = new ObjectOutputStream(new FileOutputStream(file))) {
+            ostream.writeObject(collection);
+        } catch (IOException e) {
+            System.err.println(e);
         }
-        return order;
     }
 
-    public List<Order> sortCollection(List<Order> list) {
+    private List<Order> sortCollection(List<Order> list) {
         for (int i = 0; i < list.size(); i++) {
             for (int j = 0; j < i; j++) {
                 if (list.get(j).getId().compareTo(list.get(i).getId()) > 0) {
@@ -64,14 +73,6 @@ public class OrderWriterReader {
             }
         }
         return list;
-    }
-
-    public Order update() {
-        return null;
-    }
-
-    public Order delete() {
-        return null;
     }
 }
 

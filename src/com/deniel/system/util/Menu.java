@@ -8,7 +8,7 @@ import java.io.InputStreamReader;
  * Created by Deniel on 26.02.2016.
  */
 public class Menu {
-    BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+    private BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
     public void menu() {
         System.out.println("1) Make Order");
