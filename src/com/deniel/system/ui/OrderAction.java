@@ -31,8 +31,16 @@ public class OrderAction {
 
         value = Validation.getValidString("Input price [example: 30; 20.5]: ", FLOAT_PATTERN);
         order.setPrice(new BigDecimal(value));
+    }
 
+    public void createOrder() throws IOException {
+        inputOrder();
         orderWriterReader.create(order);
+    }
+
+    public void updateOrder(String ID) throws IOException {
+        inputOrder();
+        orderWriterReader.update(ID, order);
     }
 }
 

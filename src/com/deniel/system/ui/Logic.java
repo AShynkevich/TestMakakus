@@ -20,7 +20,7 @@ public class Logic {
         OrderAction action = new OrderAction();
         OrderWriterReader writerReader = new OrderWriterReader();
 
-        while (key != 5) {
+        while (key != 7) {
             menu.menu();
 
             key = menu.pressKey();
@@ -29,7 +29,7 @@ public class Logic {
                 case 1:
                     System.out.println("Make order");
 
-                    action.inputOrder();
+                    action.createOrder();
 
                     break;
                 case 2:
@@ -52,15 +52,39 @@ public class Logic {
                     }
 
                     break;
-
                 case 4:
-                    System.out.println("Get order");
+                    System.out.println(writerReader.readAll());
+
+                    System.out.println("Enter order ID:");
+
+                    ID = menu.getOrderID();
+
+                    if (writerReader.delete(ID)) {
+                        System.out.println("Order removed!");
+                    } else {
+                        System.out.println("Order not found!");
+                    }
                     break;
                 case 5:
+                    System.out.println("Get order");
+                    break;
+                case 6:
+                    System.out.println(writerReader.readAll());
+
+                    System.out.println("Enter order ID:");
+
+                    ID = menu.getOrderID();
+
+                    action.updateOrder(ID);
+
+                    System.out.println("Order updated!");
+
+                    break;
+                case 7:
                     System.exit(0);
                     break;
                 default:
-                    System.out.println("Just choose number from 1 to 4...");
+                    System.out.println("Just choose number from 1 to 7...");
             }
 
             System.out.println("Press any key to continue...");

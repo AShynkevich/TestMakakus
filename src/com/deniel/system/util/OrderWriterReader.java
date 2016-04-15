@@ -3,27 +3,29 @@ package com.deniel.system.util;
 import com.deniel.system.domain.Order;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by Deniel on 11.03.2016.
  */
 public class OrderWriterReader {
     private static final String FILE_NAME = "orders/demo.dat";
+    private static final File COLLECTION_FILE = new File(FILE_NAME);
 
     public void create(Order order) {
-
         File dir = new File("orders");
         dir.mkdir();
-        File collectionFile = new File(FILE_NAME);
-        List<Order> collection = (!collectionFile.exists()) ? new ArrayList<Order>() : readAll();
+        List<Order> collection = (!COLLECTION_FILE.exists()) ? new ArrayList<Order>() : readAll();
+        if (COLLECTION_FILE.exists() && exist(order)) {
+            System.out.println("Order already exist!");
+            return;
+        }
         collection.add(order);
         sortCollection(collection);
-        writeStream(collectionFile, collection);
+        writeStream(collection);
     }
 
-    public Order read(String ID) throws IOException {
+    public Order read(String ID) {
         List<Order> collection = readAll();
         Order order = new Order();
         for (Order pair : collection) {
@@ -34,18 +36,35 @@ public class OrderWriterReader {
         return order;
     }
 
-    private Order update() {
-        return null;
+    public void update(String ID, Order order) {
+        List<Order> collection = readAll();
+        for (int i = 0; i < collection.size(); i++) {
+            if (collection.get(i).getId().equals(ID)) {
+                collection.set(i, order);
+            }
+        }
+        writeStream(collection);
     }
 
-    private Order delete() {
-        return null;
+    public boolean delete(String ID) {
+        List<Order> collection = readAll();
+        Order order = new Order();
+        boolean deleted = false;
+        for (Order pair : collection) {
+            if (pair.getId().equals(ID)) {
+                order = pair;
+                deleted = true;
+                break;
+            }
+        }
+        collection.remove(order);
+        writeStream(collection);
+        return deleted;
     }
 
     public List<Order> readAll() {
-        File collectionFile = new File(FILE_NAME);
         List<Order> returnList = new ArrayList<>();
-        try (ObjectInputStream istream = new ObjectInputStream(new FileInputStream(collectionFile))) {
+        try (ObjectInputStream istream = new ObjectInputStream(new FileInputStream(COLLECTION_FILE))) {
             returnList = (List<Order>) istream.readObject();
         } catch (Exception e) {
             System.err.println(e);
@@ -54,8 +73,8 @@ public class OrderWriterReader {
         return returnList;
     }
 
-    private void writeStream(File file, List<Order> collection) {
-        try (ObjectOutputStream ostream = new ObjectOutputStream(new FileOutputStream(file))) {
+    private void writeStream(List<Order> collection) {
+        try (ObjectOutputStream ostream = new ObjectOutputStream(new FileOutputStream(FILE_NAME))) {
             ostream.writeObject(collection);
         } catch (IOException e) {
             System.err.println(e);
@@ -73,6 +92,12 @@ public class OrderWriterReader {
             }
         }
         return list;
+    }
+
+    private boolean exist(Order order) {
+        String newOrderId = order.getId();
+        Order isExist = read(newOrderId);
+        return newOrderId.equals(isExist.getId());
     }
 }
 

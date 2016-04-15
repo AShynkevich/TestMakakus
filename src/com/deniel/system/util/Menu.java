@@ -14,8 +14,10 @@ public class Menu {
         System.out.println("1) Make Order");
         System.out.println("2) Load All Orders");
         System.out.println("3) Load Order by ID");
-        System.out.println("3) Get Order");
-        System.out.println("4) Exit");
+        System.out.println("4) Remove Order by ID");
+        System.out.println("5) Get Order");
+        System.out.println("6) Update order by ID");
+        System.out.println("7) Exit");
         System.out.print("Make a choice: ");
     }
 
