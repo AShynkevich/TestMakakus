@@ -17,12 +17,12 @@ public class Menu {
         System.out.println("4) Remove Order by ID");
         System.out.println("5) Get Order");
         System.out.println("6) Update order by ID");
-        System.out.println("7) Exit");
+        System.out.println("0) Exit");
         System.out.print("Make a choice: ");
     }
 
     public int pressKey() throws IOException {
-        int key = 0;
+        int key = -2;
         String s = reader.readLine();
         try {
             key = Integer.parseInt(s);
@@ -32,7 +32,7 @@ public class Menu {
         return key;
     }
 
-    public String getOrderID() {
+    public String getOrderId() {
         String ID = null;
         try {
             ID = reader.readLine();

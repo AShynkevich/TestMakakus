@@ -16,7 +16,7 @@ public class OrderWriterReader {
         File dir = new File("orders");
         dir.mkdir();
         List<Order> collection = (!COLLECTION_FILE.exists()) ? new ArrayList<Order>() : readAll();
-        if (COLLECTION_FILE.exists() && exist(order)) {
+        if (orderExist(order)) {
             System.out.println("Order already exist!");
             return;
         }
@@ -25,33 +25,34 @@ public class OrderWriterReader {
         writeStream(collection);
     }
 
-    public Order read(String ID) {
+    public Order read(String Id) {
         List<Order> collection = readAll();
         Order order = new Order();
         for (Order pair : collection) {
-            if (pair.getId().equals(ID)) {
+            if (pair.getId().equals(Id)) {
                 order = pair;
             }
         }
         return order;
     }
 
-    public void update(String ID, Order order) {
+    public void update(Order order) {
+
         List<Order> collection = readAll();
         for (int i = 0; i < collection.size(); i++) {
-            if (collection.get(i).getId().equals(ID)) {
+            if (collection.get(i).getId().equals(order.getId())) {
                 collection.set(i, order);
             }
         }
         writeStream(collection);
     }
 
-    public boolean delete(String ID) {
+    public boolean delete(String Id) {
         List<Order> collection = readAll();
         Order order = new Order();
         boolean deleted = false;
         for (Order pair : collection) {
-            if (pair.getId().equals(ID)) {
+            if (pair.getId().equals(Id)) {
                 order = pair;
                 deleted = true;
                 break;
@@ -64,11 +65,12 @@ public class OrderWriterReader {
 
     public List<Order> readAll() {
         List<Order> returnList = new ArrayList<>();
-        try (ObjectInputStream istream = new ObjectInputStream(new FileInputStream(COLLECTION_FILE))) {
-            returnList = (List<Order>) istream.readObject();
-        } catch (Exception e) {
-            System.err.println(e);
-            System.err.println("IO Error");
+        if (COLLECTION_FILE.exists()) {
+            try (ObjectInputStream istream = new ObjectInputStream(new FileInputStream(COLLECTION_FILE))) {
+                returnList = (List<Order>) istream.readObject();
+            } catch (Exception e) {
+                System.err.println(e);
+            }
         }
         return returnList;
     }
@@ -94,7 +96,7 @@ public class OrderWriterReader {
         return list;
     }
 
-    private boolean exist(Order order) {
+    private boolean orderExist (Order order) {
         String newOrderId = order.getId();
         Order isExist = read(newOrderId);
         return newOrderId.equals(isExist.getId());

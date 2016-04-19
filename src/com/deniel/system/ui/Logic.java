@@ -3,6 +3,7 @@ package com.deniel.system.ui;
 import com.deniel.system.domain.Order;
 import com.deniel.system.util.Menu;
 import com.deniel.system.util.OrderWriterReader;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -13,17 +14,18 @@ import java.io.InputStreamReader;
 public class Logic {
 
     public void logic() throws IOException {
-        int key = 0;
+        int key = -1;
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
         Menu menu = new Menu();
         OrderAction action = new OrderAction();
         OrderWriterReader writerReader = new OrderWriterReader();
 
-        while (key != 7) {
+        while (key != 0) {
             menu.menu();
 
             key = menu.pressKey();
+
 
             switch (key) {
                 case 1:
@@ -41,9 +43,7 @@ public class Logic {
                 case 3:
                     System.out.println("Enter order ID:");
 
-                    String ID = menu.getOrderID();
-
-                    Order order = writerReader.read(ID);
+                    Order order = writerReader.read(menu.getOrderId());
 
                     if (order.getId() == null) {
                         System.out.println("Order not found!");
@@ -57,34 +57,43 @@ public class Logic {
 
                     System.out.println("Enter order ID:");
 
-                    ID = menu.getOrderID();
-
-                    if (writerReader.delete(ID)) {
+                    if (writerReader.delete(menu.getOrderId())) {
                         System.out.println("Order removed!");
                     } else {
                         System.out.println("Order not found!");
                     }
+
                     break;
                 case 5:
-                    System.out.println("Get order");
+                    System.out.println("Not realised yet");
                     break;
                 case 6:
                     System.out.println(writerReader.readAll());
 
+                    if (writerReader.readAll().size() == 0) {
+                        System.out.println("Collection is empty!");
+                        break;
+                    }
+
                     System.out.println("Enter order ID:");
 
-                    ID = menu.getOrderID();
+                    String id = menu.getOrderId();
+                    Order selectedOrder = writerReader.read(id);
 
-                    action.updateOrder(ID);
+                    if (selectedOrder.getId() == null) {
+                        System.out.println("Order not found!");
+                        break;
+                    }
+                    action.updateOrder(selectedOrder);
 
                     System.out.println("Order updated!");
 
                     break;
-                case 7:
+                case 0:
                     System.exit(0);
                     break;
                 default:
-                    System.out.println("Just choose number from 1 to 7...");
+                    System.out.println("Just choose number from list");
             }
 
             System.out.println("Press any key to continue...");

@@ -9,7 +9,7 @@ import java.io.Serializable;
 public class Order implements Serializable {
     private String id;
     private String orderName;
-    private int amount;
+    private Integer amount;
     private BigDecimal price;
 
     public String getId() {
@@ -28,11 +28,11 @@ public class Order implements Serializable {
         this.orderName = orderName;
     }
 
-    public int getAmount() {
+    public Integer getAmount() {
         return amount;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(Integer amount) {
         this.amount = amount;
     }
 
