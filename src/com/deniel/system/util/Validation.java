@@ -16,7 +16,6 @@ public class Validation {
     public static final String FLOAT_PATTERN = "\\d+(\\.\\d*)?";
 
     public static String getValidString(String message, String regexp, boolean isUpdate) {
-
         Pattern pattern = Pattern.compile(regexp);
 
         while (true) {
@@ -52,7 +51,7 @@ public class Validation {
         String value = getValidString(message, FLOAT_PATTERN, isUpdate);
 
         if (value != null) {
-            return BigDecimal.valueOf(Long.parseLong(value));
+            return new BigDecimal(value);
         }
         return null;
     }

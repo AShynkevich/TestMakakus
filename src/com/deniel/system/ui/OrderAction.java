@@ -1,12 +1,10 @@
 package com.deniel.system.ui;
 
 import com.deniel.system.domain.Order;
-import com.deniel.system.util.OrderWriterReader;
+import com.deniel.system.repository.OrderRepository;
 import com.deniel.system.util.Validation;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.math.BigDecimal;
 
 /**
@@ -14,15 +12,13 @@ import java.math.BigDecimal;
  */
 public class OrderAction {
     public static final String STRING = "\\w+";
-    private BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
     Order order = new Order();
-    OrderWriterReader orderWriterReader = new OrderWriterReader();
+    OrderRepository orderRepository = new OrderRepository();
 
     public void inputOrder(boolean isUpdate) throws IOException {
 
-        if (isUpdate == false) {
-            System.out.println("Input Id: ");
-            order.setId(reader.readLine());
+        if (!isUpdate) {
+            order.setId(Validation.getValidString("Input order Id: ", STRING, isUpdate));
         }
 
         String name = Validation.getValidString("Input order name: ", STRING, isUpdate);
@@ -37,7 +33,7 @@ public class OrderAction {
 
     public void createOrder() throws IOException {
         inputOrder(false);
-        orderWriterReader.create(order);
+        orderRepository.create(order);
     }
 
     public void updateOrder(Order selectedOrder) throws IOException {
@@ -47,16 +43,14 @@ public class OrderAction {
         if (order.getOrderName() != null) {
             selectedOrder.setOrderName(order.getOrderName());
         }
-
         if (order.getAmount() != null) {
             selectedOrder.setAmount(order.getAmount());
         }
-
         if (order.getPrice() != null) {
             selectedOrder.setPrice(order.getPrice());
         }
 
-        orderWriterReader.update(selectedOrder);
+        orderRepository.update(selectedOrder);
     }
 }
 
