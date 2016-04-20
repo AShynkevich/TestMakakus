@@ -16,7 +16,6 @@ public class OrderAction {
     OrderRepository orderRepository = new OrderRepository();
 
     public void inputOrder(boolean isUpdate) throws IOException {
-
         if (!isUpdate) {
             order.setId(Validation.getValidString("Input order Id: ", STRING, isUpdate));
         }
@@ -37,7 +36,6 @@ public class OrderAction {
     }
 
     public void updateOrder(Order selectedOrder) throws IOException {
-
         inputOrder(true);
 
         if (order.getOrderName() != null) {
