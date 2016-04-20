@@ -12,8 +12,8 @@ import java.math.BigDecimal;
  */
 public class OrderAction {
     public static final String STRING = "\\w+";
-    Order order = new Order();
-    OrderRepository orderRepository = new OrderRepository();
+    private Order order = new Order();
+    private OrderRepository orderRepository = new OrderRepository();
 
     public void inputOrder(boolean isUpdate) throws IOException {
         if (!isUpdate) {
