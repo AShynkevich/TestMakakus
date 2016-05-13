@@ -8,7 +8,7 @@ import java.util.*;
 /**
  * Created by Deniel on 11.03.2016.
  */
-public class OrderRepository {
+public class OrderRepository implements IOrderRepository {
     private static final String FILE_NAME = "orders/demo.dat";
     private static final File COLLECTION_FILE = new File(FILE_NAME);
 
@@ -64,6 +64,14 @@ public class OrderRepository {
 
     public List<Order> readAll() {
         List<Order> returnList = new ArrayList<>();
+        if (COLLECTION_FILE.exists()) {
+            try (ObjectInputStream istream = new ObjectInputStream(new FileInputStream(COLLECTION_FILE))) {
+                returnList = (List<Order>) istream.readObject();
+            } catch (Exception e) {
+                System.err.println(e);
+            }
+        }
+
         if (COLLECTION_FILE.exists()) {
             try (ObjectInputStream istream = new ObjectInputStream(new FileInputStream(COLLECTION_FILE))) {
                 returnList = (List<Order>) istream.readObject();
