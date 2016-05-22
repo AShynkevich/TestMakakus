@@ -8,6 +8,5 @@ import java.util.List;
  * Created by Deniel on 22.04.2016.
  */
 public interface IOrderRepository extends ICrud<String, Order> {
-
     List<Order> readAll();
 }

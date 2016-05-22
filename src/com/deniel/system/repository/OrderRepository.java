@@ -103,7 +103,7 @@ public class OrderRepository implements IOrderRepository {
         return list;
     }
 
-    private boolean orderExist (Order order) {
+    private boolean orderExist(Order order) {
         String newOrderId = order.getId();
         Order isExist = read(newOrderId);
         return newOrderId.equals(isExist.getId());

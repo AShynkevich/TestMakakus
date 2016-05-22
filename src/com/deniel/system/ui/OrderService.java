@@ -2,11 +2,13 @@ package com.deniel.system.ui;
 
 import com.deniel.system.domain.Order;
 import com.deniel.system.repository.IOrderRepository;
-import com.deniel.system.repository.OrderRepository;
+import com.deniel.system.repository.sql.OrderRepositorySql;
 import com.deniel.system.util.InputUtils;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by Deniel on 03.03.2016.
@@ -14,11 +16,12 @@ import java.math.BigDecimal;
 public class OrderService {
 
     private Order order = new Order();
-    private IOrderRepository orderRepository = new OrderRepository();
+    private IOrderRepository orderRepository = new OrderRepositorySql();
 
     public void inputOrder(boolean isUpdate) throws IOException {
+
         if (!isUpdate) {
-            order.setId(InputUtils.getValidString("Input order Id: ", isUpdate));
+            order.setId(UUID.randomUUID().toString());
         }
 
         String name = InputUtils.getValidString("Input order name: ", isUpdate);
@@ -50,6 +53,18 @@ public class OrderService {
         }
 
         orderRepository.update(selectedOrder);
+    }
+
+    public List<Order> getAll() {
+        return orderRepository.readAll();
+    }
+
+    public Order findById(String id) {
+        return orderRepository.read(id);
+    }
+
+    public boolean deleteById(String id) {
+        return orderRepository.delete(id);
     }
 }
 

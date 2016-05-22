@@ -2,19 +2,18 @@ package com.deniel.system.ui;
 
 import com.deniel.system.domain.Order;
 import com.deniel.system.util.Menu;
-import com.deniel.system.repository.OrderRepository;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.List;
 
 /**
  * Created by Deniel on 26.02.2016.
  */
 public class Logic {
-    private OrderRepository writerReader = new OrderRepository();
     private BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-    private OrderService action = new OrderService();
+    private OrderService orderService = new OrderService();
     private Menu menu = new Menu();
 
     public void logic() throws IOException {
@@ -60,22 +59,23 @@ public class Logic {
 
     private void makeOrder() throws IOException {
         System.out.println("Make order");
-        action.createOrder();
+        orderService.createOrder();
     }
 
     private void loadOrders() {
-        if (writerReader.readAll().size() == 0) {
+        List<Order> orders = orderService.getAll();
+        if (orders.size() == 0) {
             System.out.println("There is no orders!");
         } else {
-            System.out.println("All orders:\n" + writerReader.readAll());
+            System.out.println("All orders:\n" + orders);
         }
     }
 
     private void loadOneOrder() {
         System.out.println("Enter order ID:");
-        Order order = writerReader.read(menu.getOrderId());
+        Order order = orderService.findById(menu.getOrderId());
 
-        if (order.getId() == null) {
+        if (order == null) {
             System.out.println("Order not found!");
         } else {
             System.out.println(order);
@@ -83,13 +83,14 @@ public class Logic {
     }
 
     private void removeOrder() {
-        if (writerReader.readAll().size() == 0) {
+        List<Order> orders = orderService.getAll();
+        if (orders.size() == 0) {
             System.out.println("There is no orders!");
         } else {
-            System.out.println(writerReader.readAll());
+            System.out.println(orders);
             System.out.println("Enter order ID:");
 
-            if (writerReader.delete(menu.getOrderId())) {
+            if (orderService.deleteById(menu.getOrderId())) {
                 System.out.println("Order removed!");
             } else {
                 System.out.println("Order not found!");
@@ -98,18 +99,19 @@ public class Logic {
     }
 
     private void updateOrder() throws IOException {
-        if (writerReader.readAll().size() == 0) {
+        List<Order> orders = orderService.getAll();
+        if (orders.size() == 0) {
             System.out.println("There is no orders!");
         } else {
-            System.out.println(writerReader.readAll());
+            System.out.println(orders);
             System.out.println("Enter order ID:");
             String id = menu.getOrderId();
-            Order selectedOrder = writerReader.read(id);
+            Order selectedOrder = orderService.findById(id);
 
             if (selectedOrder.getId() == null) {
                 System.out.println("Order not found!");
             } else {
-                action.updateOrder(selectedOrder);
+                orderService.updateOrder(selectedOrder);
                 System.out.println("Order updated!");
             }
         }
