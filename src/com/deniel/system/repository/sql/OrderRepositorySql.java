@@ -12,9 +12,14 @@ import java.util.List;
  * Created by Deniel on 21.05.2016.
  */
 public class OrderRepositorySql implements IOrderRepository {
+    private static final String readAllSql = "SELECT * FROM tm_order";
+    private static final String createSql = "INSERT INTO tm_order (tm_order_id, name, amount, price) values(?,?, ?, ?)";
+    private static final String readSql ="SELECT * FROM tm_order where (tm_order_id = ?)";
+    private static final String updateSql = "UPDATE tm_order SET name = ?, amount = ?, price = ? where tm_order_id = ?";
+    private static final String deleteSql = "Delete FROM tm_order where tm_order_id = ?";
     private static final String URL = "jdbc:postgresql://127.0.0.1:5432/testmakakus";
-    private static String USER = "postgres";
-    private static String PASSWORD = "30051989";
+    private static final String USER = "postgres";
+    private static final String PASSWORD = "30051989";
     private Connection connection = null;
 
     public OrderRepositorySql() {
@@ -33,7 +38,7 @@ public class OrderRepositorySql implements IOrderRepository {
         List<Order> list = new ArrayList<>();
         try {
             Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM tm_order");
+            ResultSet resultSet = statement.executeQuery(readAllSql);
             while (resultSet.next()) {
                 Order order = new Order();
                 order.setId(resultSet.getString(1));
@@ -51,7 +56,7 @@ public class OrderRepositorySql implements IOrderRepository {
     @Override
     public void create(Order order) {
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO tm_order (tm_order_id, name, amount, price) values(?,?, ?, ?)");
+            PreparedStatement preparedStatement = connection.prepareStatement(createSql);
             preparedStatement.setString(1, order.getId());
             preparedStatement.setString(2, order.getOrderName());
             preparedStatement.setInt(3, order.getAmount());
@@ -67,7 +72,7 @@ public class OrderRepositorySql implements IOrderRepository {
         ResultSet resultSet = null;
         Order order = null;
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM tm_order where (tm_order_id = ?)");
+            PreparedStatement preparedStatement = connection.prepareStatement(readSql);
             preparedStatement.setString(1, id);
             resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
@@ -91,9 +96,9 @@ public class OrderRepositorySql implements IOrderRepository {
             if (collection.get(i).getId().equals(entity.getId())) {
                 PreparedStatement preparedStatement = null;
                 try {
-                    preparedStatement = connection.prepareStatement("UPDATE tm_order SET name = ?, amount = ?, price = ? where tm_order_id = ?");
+                    preparedStatement = connection.prepareStatement(updateSql);
                 preparedStatement.setString(1, entity.getOrderName());
-                preparedStatement.setInt(2, entity.getAmount());
+                    preparedStatement.setInt(2, entity.getAmount());
                 preparedStatement.setBigDecimal(3, entity.getPrice());
                     preparedStatement.setString(4, entity.getId());
                 preparedStatement.executeUpdate();
@@ -111,9 +116,9 @@ public class OrderRepositorySql implements IOrderRepository {
         boolean deleted = true;
         if (read(id) != null) {
             try {
-                PreparedStatement preparedStatement = connection.prepareStatement("Delete FROM tm_order where tm_order_id = ?");
+                PreparedStatement preparedStatement = connection.prepareStatement(deleteSql);
                 preparedStatement.setString(1, id);
-                preparedStatement.executeUpdate(); 
+                preparedStatement.executeUpdate();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
