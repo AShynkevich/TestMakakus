@@ -1,11 +1,13 @@
 apply plugin: 'java'
 apply plugin: 'application'
 
+mainClassName="com.deniel.system.Run"
+
 repositories {
         jcenter()
 }
 
 dependencies {
+        compile group: 'org.postgresql', name: 'postgresql', version: '9.4-1200-jdbc41'
         compile 'org.slf4j:slf4j-api:1.7.21'
 }
-    
