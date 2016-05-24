@@ -60,7 +60,11 @@ public class OrderService {
     }
 
     public Order findById(String id) {
-        return orderRepository.read(id);
+        if(orderRepository.read(id) != null) {
+            return orderRepository.read(id);
+        } else {
+            return new Order();
+        }
     }
 
     public boolean deleteById(String id) {

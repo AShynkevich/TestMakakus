@@ -3,7 +3,6 @@ package com.deniel.system.repository.sql;
 import com.deniel.system.domain.Order;
 import com.deniel.system.repository.IOrderRepository;
 
-import java.io.File;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,11 +11,11 @@ import java.util.List;
  * Created by Deniel on 21.05.2016.
  */
 public class OrderRepositorySql implements IOrderRepository {
-    private static final String readAllSql = "SELECT * FROM tm_order";
-    private static final String createSql = "INSERT INTO tm_order (tm_order_id, name, amount, price) values(?,?, ?, ?)";
-    private static final String readSql ="SELECT * FROM tm_order where (tm_order_id = ?)";
-    private static final String updateSql = "UPDATE tm_order SET name = ?, amount = ?, price = ? where tm_order_id = ?";
-    private static final String deleteSql = "Delete FROM tm_order where tm_order_id = ?";
+    private static final String READ_ALL_SQL = "SELECT tm_order_id, name, amount, price FROM tm_order";
+    private static final String CREATE_SQL = "INSERT INTO tm_order (name, amount, price, tm_order_id) values(?,?, ?, ?)";
+    private static final String READ_SQL = "SELECT tm_order_id, name, amount, price FROM tm_order where (tm_order_id = ?)";
+    private static final String UPDATE_SQL = "UPDATE tm_order SET name = ?, amount = ?, price = ? where tm_order_id = ?";
+    private static final String DELETE_SQL = "Delete FROM tm_order where tm_order_id = ?";
     private static final String URL = "jdbc:postgresql://127.0.0.1:5432/testmakakus";
     private static final String USER = "postgres";
     private static final String PASSWORD = "30051989";
@@ -38,13 +37,9 @@ public class OrderRepositorySql implements IOrderRepository {
         List<Order> list = new ArrayList<>();
         try {
             Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(readAllSql);
+            ResultSet resultSet = statement.executeQuery(READ_ALL_SQL);
             while (resultSet.next()) {
-                Order order = new Order();
-                order.setId(resultSet.getString(1));
-                order.setOrderName(resultSet.getString(4));
-                order.setAmount(resultSet.getInt(2));
-                order.setPrice(resultSet.getBigDecimal(3));
+                Order order = orderSetter(resultSet);
                 list.add(order);
             }
         } catch (SQLException e) {
@@ -56,11 +51,8 @@ public class OrderRepositorySql implements IOrderRepository {
     @Override
     public void create(Order order) {
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement(createSql);
-            preparedStatement.setString(1, order.getId());
-            preparedStatement.setString(2, order.getOrderName());
-            preparedStatement.setInt(3, order.getAmount());
-            preparedStatement.setBigDecimal(4, order.getPrice());
+            PreparedStatement preparedStatement = connection.prepareStatement(CREATE_SQL);
+            setPreparedStatement(preparedStatement, order);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -69,18 +61,13 @@ public class OrderRepositorySql implements IOrderRepository {
 
     @Override
     public Order read(String id) {
-        ResultSet resultSet = null;
         Order order = null;
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement(readSql);
+            PreparedStatement preparedStatement = connection.prepareStatement(READ_SQL);
             preparedStatement.setString(1, id);
-            resultSet = preparedStatement.executeQuery();
+            ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                order = new Order();
-                order.setId(resultSet.getString(1));
-                order.setOrderName(resultSet.getString(4));
-                order.setAmount(resultSet.getInt(2));
-                order.setPrice(resultSet.getBigDecimal(3));
+                order = orderSetter(resultSet);
             }
             return order;
         } catch (SQLException e) {
@@ -89,42 +76,45 @@ public class OrderRepositorySql implements IOrderRepository {
     }
 
     @Override
-    public void update(Order entity) {
-
-        List<Order> collection = readAll();
-        for (int i = 0; i < collection.size(); i++) {
-            if (collection.get(i).getId().equals(entity.getId())) {
-                PreparedStatement preparedStatement = null;
+    public void update(Order order) {
                 try {
-                    preparedStatement = connection.prepareStatement(updateSql);
-                preparedStatement.setString(1, entity.getOrderName());
-                    preparedStatement.setInt(2, entity.getAmount());
-                preparedStatement.setBigDecimal(3, entity.getPrice());
-                    preparedStatement.setString(4, entity.getId());
-                preparedStatement.executeUpdate();
+                    PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_SQL);
+                    setPreparedStatement(preparedStatement, order);
+                    preparedStatement.executeUpdate();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
-            }
-        }
     }
 
     @Override
     public boolean delete(String id) {
-        ResultSet resultSet = null;
-        Order order = new Order();
-        boolean deleted = true;
         if (read(id) != null) {
             try {
-                PreparedStatement preparedStatement = connection.prepareStatement(deleteSql);
+                PreparedStatement preparedStatement = connection.prepareStatement(DELETE_SQL);
                 preparedStatement.setString(1, id);
                 preparedStatement.executeUpdate();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            return deleted;
+            return true;
         } else {
             return false;
         }
+    }
+
+    private void setPreparedStatement (PreparedStatement preparedStatement, Order entity) throws SQLException{
+        preparedStatement.setString(1, entity.getOrderName());
+        preparedStatement.setInt(2, entity.getAmount());
+        preparedStatement.setBigDecimal(3, entity.getPrice());
+        preparedStatement.setString(4, entity.getId());
+    }
+
+    private Order orderSetter (ResultSet resultSet) throws SQLException {
+        Order order = new Order();
+        order.setId(resultSet.getString("tm_order_id"));
+        order.setOrderName(resultSet.getString("name"));
+        order.setAmount(resultSet.getInt("amount"));
+        order.setPrice(resultSet.getBigDecimal("price"));
+        return order;
     }
 }
