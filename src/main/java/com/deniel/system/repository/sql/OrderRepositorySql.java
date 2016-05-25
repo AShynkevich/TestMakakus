@@ -1,5 +1,6 @@
 package com.deniel.system.repository.sql;
 
+import com.deniel.system.PropertyValuesGetter;
 import com.deniel.system.domain.Order;
 import com.deniel.system.repository.IOrderRepository;
 
@@ -16,9 +17,10 @@ public class OrderRepositorySql implements IOrderRepository {
     private static final String READ_SQL = "SELECT tm_order_id, name, amount, price FROM tm_order where (tm_order_id = ?)";
     private static final String UPDATE_SQL = "UPDATE tm_order SET name = ?, amount = ?, price = ? where tm_order_id = ?";
     private static final String DELETE_SQL = "Delete FROM tm_order where tm_order_id = ?";
-    private static final String URL = "jdbc:postgresql://127.0.0.1:5432/testmakakus";
-    private static final String USER = "postgres";
-    private static final String PASSWORD = "30051989";
+    PropertyValuesGetter getPropertyValues = new PropertyValuesGetter();
+    private String URL = getPropertyValues.getDbURL() + getPropertyValues.getDbName();
+    private String USER = getPropertyValues.getDbUserName();
+    private String PASSWORD = getPropertyValues.getDbPass();
     private Connection connection = null;
 
     public OrderRepositorySql() {
@@ -77,13 +79,13 @@ public class OrderRepositorySql implements IOrderRepository {
 
     @Override
     public void update(Order order) {
-                try {
-                    PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_SQL);
-                    setPreparedStatement(preparedStatement, order);
-                    preparedStatement.executeUpdate();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_SQL);
+            setPreparedStatement(preparedStatement, order);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -102,14 +104,14 @@ public class OrderRepositorySql implements IOrderRepository {
         }
     }
 
-    private void setPreparedStatement (PreparedStatement preparedStatement, Order entity) throws SQLException{
+    private void setPreparedStatement(PreparedStatement preparedStatement, Order entity) throws SQLException {
         preparedStatement.setString(1, entity.getOrderName());
         preparedStatement.setInt(2, entity.getAmount());
         preparedStatement.setBigDecimal(3, entity.getPrice());
         preparedStatement.setString(4, entity.getId());
     }
 
-    private Order orderSetter (ResultSet resultSet) throws SQLException {
+    private Order orderSetter(ResultSet resultSet) throws SQLException {
         Order order = new Order();
         order.setId(resultSet.getString("tm_order_id"));
         order.setOrderName(resultSet.getString("name"));
