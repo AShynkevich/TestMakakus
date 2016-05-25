@@ -22,7 +22,7 @@ public class PropertyValuesGetter {
         InputStream inputStream = null;
 
         try {
-            inputStream = new FileInputStream("tm.properties");
+            inputStream = getClass().getResourceAsStream("/tm.properties");
             if (inputStream != null) {
                 properties.load(inputStream);
             } else {
