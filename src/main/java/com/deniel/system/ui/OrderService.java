@@ -7,6 +7,7 @@ import com.deniel.system.util.InputUtils;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.UUID;
 
@@ -16,7 +17,11 @@ import java.util.UUID;
 public class OrderService {
 
     private Order order = new Order();
-    private IOrderRepository orderRepository = new OrderRepositorySql();
+    private IOrderRepository orderRepository;
+
+    public OrderService() throws IOException, SQLException, ClassNotFoundException{
+        orderRepository = new OrderRepositorySql();
+    }
 
     public void inputOrder(boolean isUpdate) throws IOException {
 

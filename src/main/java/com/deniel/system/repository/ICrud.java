@@ -1,5 +1,7 @@
 package com.deniel.system.repository;
 
+import java.sql.SQLException;
+
 /**
  * Created by Deniel on 22.04.2016.
  */

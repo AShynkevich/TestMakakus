@@ -12,6 +12,7 @@ public class OrderRepository implements IOrderRepository {
     private static final String FILE_NAME = "orders/demo.dat";
     private static final File COLLECTION_FILE = new File(FILE_NAME);
 
+    @Override
     public void create(Order order) {
         File dir = new File("orders");
         dir.mkdir();
@@ -25,6 +26,7 @@ public class OrderRepository implements IOrderRepository {
         writeStream(collection);
     }
 
+    @Override
     public Order read(String Id) {
         List<Order> collection = readAll();
         Order order = new Order();
@@ -36,6 +38,7 @@ public class OrderRepository implements IOrderRepository {
         return order;
     }
 
+    @Override
     public void update(Order order) {
         List<Order> collection = readAll();
         for (int i = 0; i < collection.size(); i++) {
@@ -46,6 +49,7 @@ public class OrderRepository implements IOrderRepository {
         writeStream(collection);
     }
 
+    @Override
     public boolean delete(String Id) {
         List<Order> collection = readAll();
         Order order = new Order();
@@ -62,16 +66,9 @@ public class OrderRepository implements IOrderRepository {
         return deleted;
     }
 
+    @Override
     public List<Order> readAll() {
         List<Order> returnList = new ArrayList<>();
-        if (COLLECTION_FILE.exists()) {
-            try (ObjectInputStream istream = new ObjectInputStream(new FileInputStream(COLLECTION_FILE))) {
-                returnList = (List<Order>) istream.readObject();
-            } catch (Exception e) {
-                System.err.println(e);
-            }
-        }
-
         if (COLLECTION_FILE.exists()) {
             try (ObjectInputStream istream = new ObjectInputStream(new FileInputStream(COLLECTION_FILE))) {
                 returnList = (List<Order>) istream.readObject();

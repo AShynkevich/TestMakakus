@@ -4,6 +4,7 @@ import com.deniel.system.PropertyValuesGetter;
 import com.deniel.system.domain.Order;
 import com.deniel.system.repository.IOrderRepository;
 
+import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,21 +18,19 @@ public class OrderRepositorySql implements IOrderRepository {
     private static final String READ_SQL = "SELECT tm_order_id, name, amount, price FROM tm_order where (tm_order_id = ?)";
     private static final String UPDATE_SQL = "UPDATE tm_order SET name = ?, amount = ?, price = ? where tm_order_id = ?";
     private static final String DELETE_SQL = "Delete FROM tm_order where tm_order_id = ?";
-    PropertyValuesGetter getPropertyValues = new PropertyValuesGetter();
-    private String URL = getPropertyValues.getDbURL() + getPropertyValues.getDbName();
-    private String USER = getPropertyValues.getDbUserName();
-    private String PASSWORD = getPropertyValues.getDbPass();
+
+    private String URL = null;
+    private String USER = null;
+    private String PASSWORD = null;
     private Connection connection = null;
 
-    public OrderRepositorySql() {
-        try {
-            Class.forName("org.postgresql.Driver");
-            this.connection = DriverManager.getConnection(URL, USER, PASSWORD);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
+    public OrderRepositorySql() throws IOException, SQLException, ClassNotFoundException {
+        PropertyValuesGetter getPropertyValues = new PropertyValuesGetter();
+        URL = getPropertyValues.getDbURL() + getPropertyValues.getDbName();
+        USER = getPropertyValues.getDbUserName();
+        PASSWORD = getPropertyValues.getDbPass();
+        Class.forName("org.postgresql.Driver");
+        this.connection = DriverManager.getConnection(URL, USER, PASSWORD);
     }
 
     @Override

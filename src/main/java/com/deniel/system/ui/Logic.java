@@ -4,8 +4,10 @@ import com.deniel.system.domain.Order;
 import com.deniel.system.util.Menu;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -13,8 +15,12 @@ import java.util.List;
  */
 public class Logic {
     private BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-    private OrderService orderService = new OrderService();
+    private OrderService orderService;
     private Menu menu = new Menu();
+
+    public Logic() throws IOException, SQLException, ClassNotFoundException {
+        orderService = new OrderService();
+    }
 
     public void logic() throws IOException {
         int key = -1;
