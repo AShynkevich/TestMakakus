@@ -18,7 +18,7 @@ public class Logic {
     private OrderService orderService;
     private Menu menu = new Menu();
 
-    public Logic() throws IOException, SQLException, ClassNotFoundException {
+    public Logic() {
         orderService = new OrderService();
     }
 

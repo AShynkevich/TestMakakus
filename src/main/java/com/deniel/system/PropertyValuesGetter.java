@@ -15,26 +15,30 @@ public class PropertyValuesGetter {
     private String dbPass = "";
     private String DEFAULT_TMPROPERTIES_PATH = "/tm.properties";
 
-    public PropertyValuesGetter() throws IOException {
+    public PropertyValuesGetter() {
         getPropertyValues();
     }
 
-    private void getPropertyValues() throws IOException {
+    private void getPropertyValues() {
         Properties properties = new Properties();
         InputStream inputStream;
         String categoryPath = System.getProperty("properties.path");
-        if (StringUtils.isBlank(categoryPath)) {
-            inputStream = getClass().getResourceAsStream(DEFAULT_TMPROPERTIES_PATH);
-        } else {
-            File file = new File(categoryPath + DEFAULT_TMPROPERTIES_PATH);
-            inputStream = new FileInputStream(file);
+        try {
+            if (StringUtils.isBlank(categoryPath)) {
+                inputStream = getClass().getResourceAsStream(DEFAULT_TMPROPERTIES_PATH);
+            } else {
+                File file = new File(categoryPath + DEFAULT_TMPROPERTIES_PATH);
+                inputStream = new FileInputStream(file);
+            }
+            properties.load(inputStream);
+            dbURL = properties.getProperty("dbConnectionURL");
+            dbName = properties.getProperty("dbName");
+            dbUserName = properties.getProperty("dbUserName");
+            dbPass = properties.getProperty("dbPass");
+            inputStream.close();
+        } catch (Exception e) {
+            throw new TmSystemException(".properties file not found", e);
         }
-        properties.load(inputStream);
-        dbURL = properties.getProperty("dbConnectionURL");
-        dbName = properties.getProperty("dbName");
-        dbUserName = properties.getProperty("dbUserName");
-        dbPass = properties.getProperty("dbPass");
-        inputStream.close();
     }
 
 

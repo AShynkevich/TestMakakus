@@ -19,7 +19,7 @@ public class OrderService {
     private Order order = new Order();
     private IOrderRepository orderRepository;
 
-    public OrderService() throws IOException, SQLException, ClassNotFoundException{
+    public OrderService() {
         orderRepository = new OrderRepositorySql();
     }
 
@@ -65,7 +65,7 @@ public class OrderService {
     }
 
     public Order findById(String id) {
-        if(orderRepository.read(id) != null) {
+        if (orderRepository.read(id) != null) {
             return orderRepository.read(id);
         } else {
             return new Order();

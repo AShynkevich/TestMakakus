@@ -1,10 +1,10 @@
 package com.deniel.system.repository.sql;
 
 import com.deniel.system.PropertyValuesGetter;
+import com.deniel.system.TmSystemException;
 import com.deniel.system.domain.Order;
 import com.deniel.system.repository.IOrderRepository;
 
-import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,13 +24,17 @@ public class OrderRepositorySql implements IOrderRepository {
     private String PASSWORD = null;
     private Connection connection = null;
 
-    public OrderRepositorySql() throws IOException, SQLException, ClassNotFoundException {
+    public OrderRepositorySql() {
         PropertyValuesGetter getPropertyValues = new PropertyValuesGetter();
         URL = getPropertyValues.getDbURL() + getPropertyValues.getDbName();
         USER = getPropertyValues.getDbUserName();
         PASSWORD = getPropertyValues.getDbPass();
-        Class.forName("org.postgresql.Driver");
-        this.connection = DriverManager.getConnection(URL, USER, PASSWORD);
+        try {
+            Class.forName("org.postgresql.Driver");
+            this.connection = DriverManager.getConnection(URL, USER, PASSWORD);
+        } catch (Exception e) {
+            throw new TmSystemException("Database init connection error.", e);
+        }
     }
 
     @Override

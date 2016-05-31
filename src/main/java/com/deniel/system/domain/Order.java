@@ -46,8 +46,8 @@ public class Order implements Serializable {
 
     @Override
 
-    public String toString () {
-        return  "\nID: " + id +
+    public String toString() {
+        return "\nID: " + id +
                 "\nName: " + orderName +
                 "\nAmount: " + amount +
                 "\nPrice: " + price;

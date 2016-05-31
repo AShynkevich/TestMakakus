@@ -37,7 +37,7 @@ public class Menu {
         try {
             ID = reader.readLine();
             return ID;
-        } catch (IOException e) {
+        } catch (Exception e) {
             System.out.println(e);
         }
         return ID;

@@ -1,5 +1,6 @@
 package com.deniel.system.repository;
 
+import com.deniel.system.TmSystemException;
 import com.deniel.system.domain.Order;
 
 import java.io.*;
@@ -82,8 +83,8 @@ public class OrderRepository implements IOrderRepository {
     private void writeStream(List<Order> collection) {
         try (ObjectOutputStream ostream = new ObjectOutputStream(new FileOutputStream(FILE_NAME))) {
             ostream.writeObject(collection);
-        } catch (IOException e) {
-            System.err.println(e);
+        } catch (Exception e) {
+            throw new TmSystemException("Unable to write file.", e);
         }
     }
 
