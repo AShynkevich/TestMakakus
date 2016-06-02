@@ -1,6 +1,8 @@
 package com.deniel.system;
 
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.util.Properties;
@@ -9,6 +11,8 @@ import java.util.Properties;
  * Created by Deniel on 25.05.2016.
  */
 public class PropertyValuesGetter {
+    private static final Logger LOGGER = LoggerFactory.getLogger(PropertyValuesGetter.class);
+
     private String dbURL = "";
     private String dbName = "";
     private String dbUserName = "";
@@ -37,6 +41,7 @@ public class PropertyValuesGetter {
             dbPass = properties.getProperty("dbPass");
             inputStream.close();
         } catch (Exception e) {
+            LOGGER.error("Cannot read properties", e);
             throw new TmSystemException("Cannot read properties", e);
         }
     }

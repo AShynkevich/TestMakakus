@@ -4,6 +4,8 @@ import com.deniel.system.TmSystemException;
 import com.deniel.system.domain.Order;
 import com.deniel.system.util.InputUtils;
 import com.deniel.system.util.Menu;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -11,6 +13,8 @@ import java.util.List;
  * Created by Deniel on 26.02.2016.
  */
 public class Logic {
+    private static final Logger LOGGER = LoggerFactory.getLogger(Menu.class);
+
     private OrderService orderService = new OrderService();
     private Menu menu = new Menu();
 
@@ -48,14 +52,14 @@ public class Logic {
                     default:
                         System.out.println("Just choose number from list");
                 }
+
+                System.out.println("Press any key to continue...");
+                InputUtils.readLine();
             }
         } catch (Exception e) {
+            LOGGER.error("IO error.", e);
             throw new TmSystemException("IO error.", e);
         }
-
-        System.out.println("Press any key to continue...");
-        InputUtils.readLine();
-
 
         for (int i = 0; i < 25; ++i) {
             System.out.println();
@@ -78,7 +82,7 @@ public class Logic {
 
     private void loadOneOrder() {
         System.out.println("Enter order ID:");
-        Order order = orderService.findById(menu.getOrderId());
+        Order order = orderService.findById(menu.OrderIdInput());
 
         if (order == null) {
             System.out.println("Order not found!");
@@ -95,7 +99,7 @@ public class Logic {
             System.out.println(orders);
             System.out.println("Enter order ID:");
 
-            if (orderService.deleteById(menu.getOrderId())) {
+            if (orderService.deleteById(menu.OrderIdInput())) {
                 System.out.println("Order removed!");
             } else {
                 System.out.println("Order not found!");
@@ -110,7 +114,7 @@ public class Logic {
         } else {
             System.out.println(orders);
             System.out.println("Enter order ID:");
-            String id = menu.getOrderId();
+            String id = menu.OrderIdInput();
             Order selectedOrder = orderService.findById(id);
 
             if (selectedOrder.getId() == null) {

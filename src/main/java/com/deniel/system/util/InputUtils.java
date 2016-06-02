@@ -1,5 +1,9 @@
 package com.deniel.system.util;
 
+import com.deniel.system.TmSystemException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -10,6 +14,8 @@ import java.util.regex.Pattern;
  * Created by alexshaman on 3/7/16.
  */
 public final class InputUtils {
+    private static final Logger LOGGER = LoggerFactory.getLogger(InputUtils.class);
+
     private static final String ONLY_NUMBER_PATTERN = "\\d+";
     private static final String FLOAT_PATTERN = "\\d+(\\.\\d*)?";
     private static final String STRING_PATTERN = "\\w+";
@@ -42,9 +48,8 @@ public final class InputUtils {
         Pattern pattern = Pattern.compile(regexp);
 
         while (true) {
-            try {
                 System.out.println(message);
-                String line = reader.readLine();
+                String line = readLine();
                 if (isUpdate == true && line.equals("")) {
                     return null;
                 }
@@ -52,9 +57,6 @@ public final class InputUtils {
                     return line;
                 }
                 System.out.println("This key is not allowed here");
-            } catch (IOException e) {
-                System.out.println(e);
-            }
         }
     }
 
@@ -63,7 +65,8 @@ public final class InputUtils {
         try {
             returnString = reader.readLine();
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.error("IO error", e);
+            throw  new TmSystemException("IO error", e);
         }
         return returnString;
     }

@@ -2,6 +2,8 @@ package com.deniel.system.repository;
 
 import com.deniel.system.TmSystemException;
 import com.deniel.system.domain.Order;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.util.*;
@@ -10,6 +12,8 @@ import java.util.*;
  * Created by Deniel on 11.03.2016.
  */
 public class OrderRepository implements IOrderRepository {
+    private static final Logger LOGGER = LoggerFactory.getLogger(OrderRepository.class);
+
     private static final String FILE_NAME = "orders/demo.dat";
     private static final File COLLECTION_FILE = new File(FILE_NAME);
 
@@ -74,7 +78,8 @@ public class OrderRepository implements IOrderRepository {
             try (ObjectInputStream istream = new ObjectInputStream(new FileInputStream(COLLECTION_FILE))) {
                 returnList = (List<Order>) istream.readObject();
             } catch (Exception e) {
-                System.err.println(e);
+                LOGGER.error("IO or CNF exception", e);
+                throw new TmSystemException("IO or CNF exception", e);
             }
         }
         return returnList;
@@ -84,6 +89,7 @@ public class OrderRepository implements IOrderRepository {
         try (ObjectOutputStream ostream = new ObjectOutputStream(new FileOutputStream(FILE_NAME))) {
             ostream.writeObject(collection);
         } catch (Exception e) {
+            LOGGER.error("Unable to write file", e);
             throw new TmSystemException("Unable to write file.", e);
         }
     }

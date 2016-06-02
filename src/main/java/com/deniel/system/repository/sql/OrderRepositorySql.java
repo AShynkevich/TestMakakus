@@ -4,6 +4,8 @@ import com.deniel.system.PropertyValuesGetter;
 import com.deniel.system.TmSystemException;
 import com.deniel.system.domain.Order;
 import com.deniel.system.repository.IOrderRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -13,6 +15,8 @@ import java.util.List;
  * Created by Deniel on 21.05.2016.
  */
 public class OrderRepositorySql implements IOrderRepository {
+    private static final Logger LOGGER = LoggerFactory.getLogger(OrderRepositorySql.class);
+
     private static final String READ_ALL_SQL = "SELECT tm_order_id, name, amount, price FROM tm_order";
     private static final String CREATE_SQL = "INSERT INTO tm_order (name, amount, price, tm_order_id) values(?,?, ?, ?)";
     private static final String READ_SQL = "SELECT tm_order_id, name, amount, price FROM tm_order where (tm_order_id = ?)";
@@ -33,6 +37,7 @@ public class OrderRepositorySql implements IOrderRepository {
             Class.forName("org.postgresql.Driver");
             this.connection = DriverManager.getConnection(URL, USER, PASSWORD);
         } catch (Exception e) {
+            LOGGER.error("Database init connection error.", e);
             throw new TmSystemException("Database init connection error.", e);
         }
     }
@@ -48,7 +53,7 @@ public class OrderRepositorySql implements IOrderRepository {
                 list.add(order);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.warn("SQL exception", e);
         }
         return list;
     }
@@ -60,7 +65,7 @@ public class OrderRepositorySql implements IOrderRepository {
             setPreparedStatement(preparedStatement, order);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.warn("SQL exception", e);
         }
     }
 
@@ -76,6 +81,7 @@ public class OrderRepositorySql implements IOrderRepository {
             }
             return order;
         } catch (SQLException e) {
+            LOGGER.warn("SQL exception", e);
             return order;
         }
     }
@@ -87,7 +93,7 @@ public class OrderRepositorySql implements IOrderRepository {
             setPreparedStatement(preparedStatement, order);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.warn("SQL exception", e);
         }
     }
 
@@ -99,7 +105,7 @@ public class OrderRepositorySql implements IOrderRepository {
                 preparedStatement.setString(1, id);
                 preparedStatement.executeUpdate();
             } catch (SQLException e) {
-                e.printStackTrace();
+                LOGGER.warn("SQL exception");
             }
             return true;
         } else {
