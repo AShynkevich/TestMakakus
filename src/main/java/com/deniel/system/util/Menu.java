@@ -1,14 +1,9 @@
 package com.deniel.system.util;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-
 /**
  * Created by Deniel on 26.02.2016.
  */
 public class Menu {
-    private BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
     public void menu() {
         System.out.println("1) Make Order");
@@ -21,11 +16,11 @@ public class Menu {
         System.out.print("Make a choice: ");
     }
 
-    public int pressKey() throws IOException {
+    public int pressKey() {
         int key = -2;
-        String s = reader.readLine();
+        String inputString = InputUtils.readLine();
         try {
-            key = Integer.parseInt(s);
+            key = Integer.parseInt(inputString);
         } catch (NumberFormatException e) {
             System.out.println("That key is not allowed here.");
         }
@@ -35,7 +30,7 @@ public class Menu {
     public String getOrderId() {
         String ID = null;
         try {
-            ID = reader.readLine();
+            ID = InputUtils.readLine();
             return ID;
         } catch (Exception e) {
             System.out.println(e);

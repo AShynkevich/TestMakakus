@@ -10,14 +10,13 @@ import java.util.regex.Pattern;
  * Created by alexshaman on 3/7/16.
  */
 public final class InputUtils {
-    private InputUtils() {
-    }
-
     private static final String ONLY_NUMBER_PATTERN = "\\d+";
     private static final String FLOAT_PATTERN = "\\d+(\\.\\d*)?";
     private static final String STRING_PATTERN = "\\w+";
-
     private static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+
+    private InputUtils() {
+    }
 
     public static String getValidString(String message, boolean isUpdate) {
         return getValidString(message, STRING_PATTERN, isUpdate);
@@ -57,5 +56,15 @@ public final class InputUtils {
                 System.out.println(e);
             }
         }
+    }
+
+    public static String readLine() {
+        String returnString = null;
+        try {
+            returnString = reader.readLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return returnString;
     }
 }

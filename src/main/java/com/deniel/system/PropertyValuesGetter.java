@@ -37,7 +37,7 @@ public class PropertyValuesGetter {
             dbPass = properties.getProperty("dbPass");
             inputStream.close();
         } catch (Exception e) {
-            throw new TmSystemException(".properties file not found", e);
+            throw new TmSystemException("Cannot read properties", e);
         }
     }
 
