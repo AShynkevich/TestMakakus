@@ -1,5 +1,6 @@
 package com.deniel.system.util;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,16 +33,17 @@ public class Menu {
         return key;
     }
 
-    public String OrderIdInput() {
-        String ID = null;
-        try {
-            ID = InputUtils.readLine();
-            return ID;
-        } catch (Exception e) {
-            LOGGER.error("IO exception", e);
-            System.out.println(e);
+    public String inputOrderId() {
+        String id = null;
+        while (id == null) {
+            System.out.println("Enter order ID:");
+                id = InputUtils.readLine();
+            if (StringUtils.isBlank(id)) {
+                System.out.println("That key is not allowed here!");
+                id = null;
+            }
         }
-        return ID;
+        return id;
     }
 }
 

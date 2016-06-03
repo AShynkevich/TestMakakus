@@ -81,10 +81,9 @@ public class Logic {
     }
 
     private void loadOneOrder() {
-        System.out.println("Enter order ID:");
-        Order order = orderService.findById(menu.OrderIdInput());
+        Order order = orderService.findById(menu.inputOrderId());
 
-        if (order == null) {
+        if (order.getId() == null) {
             System.out.println("Order not found!");
         } else {
             System.out.println(order);
@@ -97,9 +96,8 @@ public class Logic {
             System.out.println("There is no orders!");
         } else {
             System.out.println(orders);
-            System.out.println("Enter order ID:");
 
-            if (orderService.deleteById(menu.OrderIdInput())) {
+            if (orderService.deleteById(menu.inputOrderId())) {
                 System.out.println("Order removed!");
             } else {
                 System.out.println("Order not found!");
@@ -113,8 +111,7 @@ public class Logic {
             System.out.println("There is no orders!");
         } else {
             System.out.println(orders);
-            System.out.println("Enter order ID:");
-            String id = menu.OrderIdInput();
+            String id = menu.inputOrderId();
             Order selectedOrder = orderService.findById(id);
 
             if (selectedOrder.getId() == null) {

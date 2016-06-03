@@ -10,5 +10,7 @@ repositories {
 dependencies {
         compile group: 'org.postgresql', name: 'postgresql', version: '9.4-1200-jdbc41'
         compile 'org.slf4j:slf4j-api:1.7.21'
+		compile 'org.logback:logback-classic:1.1.7'
+		compile 'org.logback:logback-core:1.1.7'
 		compile 'org.apache.commons:commons-lang3:3.3.2'
 }
