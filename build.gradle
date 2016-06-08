@@ -15,4 +15,5 @@ dependencies {
 		compile 'ch.qos.logback:logback-core:1.1.7'
 		compile 'org.apache.commons:commons-lang3:3.3.2'
 		compile 'javax.servlet:javax.servlet-api:3.0.1'
+		compile 'jstl:jstl:1.2'
 }
