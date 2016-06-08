@@ -1,4 +1,5 @@
 apply plugin: 'java'
+apply plugin: 'war'
 apply plugin: 'application'
 
 mainClassName="com.deniel.system.Run"
@@ -13,4 +14,5 @@ dependencies {
 		compile 'ch.qos.logback:logback-classic:1.1.7'
 		compile 'ch.qos.logback:logback-core:1.1.7'
 		compile 'org.apache.commons:commons-lang3:3.3.2'
+		compile 'javax.servlet:javax.servlet-api:3.0.1'
 }
