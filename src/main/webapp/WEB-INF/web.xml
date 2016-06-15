@@ -14,9 +14,19 @@
 		<servlet-class>com.deniel.system.HelloWorldServlet</servlet-class>
 	</servlet>
 	
+	<servlet>
+		<servlet-name>somejsp</servlet-name>
+		<servlet-class>com.deniel.system.SomeJSP</servlet-class>
+	</servlet>
+	
 	<servlet-mapping>
 		<servlet-name>getallorders</servlet-name>
 		<url-pattern>/getallorders</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>somejsp</servlet-name>
+		<url-pattern>/somejsp</url-pattern>
 	</servlet-mapping>
 	
 </web-app>

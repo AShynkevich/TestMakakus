@@ -20,5 +20,6 @@
 				<td><c:out value="${order.price}"/></td><td><c:out value="${order.amount}"/></td></tr>
 			</c:forEach>
 		</table>
+		<a href="/TestMakakus/">Return</a>
     </body>
 </html>
