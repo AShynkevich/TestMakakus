@@ -17,6 +17,6 @@ public class HelloWorldServlet extends HttpServlet {
     public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         List<Order> orderList = orderService.getAll();
         req.setAttribute("orderList", orderList);
-        getServletContext().getRequestDispatcher("/WEB-INF/jsp/hello.jsp").forward(req, resp);
+        getServletContext().getRequestDispatcher("/WEB-INF/jsp/getallorders.jsp").forward(req, resp);
     }
 }

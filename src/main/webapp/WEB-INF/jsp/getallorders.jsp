@@ -4,7 +4,7 @@
     <head>
 	<link rel="stylesheet" href="css/main.css">
         <title>
-            Hello World Sample
+            Get All Orders
         </title>
     </head>
 
