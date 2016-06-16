@@ -2,13 +2,12 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
     <head>
-        <title>
-            Get All Orders
-        </title>
-    </head>
-
+    <title>Welcome page</title>
+</head>
+	<header>
+	<h1>Working with Postgresql DataBase</h1>
+	</header>
     <body>
-		<c:out value="${someString}"/>
-		<a href="/TestMakakus/">Return</a>
+        <a href="/TestMakakus/getallorders">Get all orders</a>
     </body>
 </html>

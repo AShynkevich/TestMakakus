@@ -5,28 +5,14 @@
     xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
 	version="3.0">
 
-	<welcome-file-list>
-    <welcome-file>index.html</welcome-file>
-	</welcome-file-list>
-	
 	<servlet>
 		<servlet-name>getallorders</servlet-name>
 		<servlet-class>com.deniel.system.HelloWorldServlet</servlet-class>
 	</servlet>
 	
-	<servlet>
-		<servlet-name>somejsp</servlet-name>
-		<servlet-class>com.deniel.system.SomeJSP</servlet-class>
-	</servlet>
-	
 	<servlet-mapping>
 		<servlet-name>getallorders</servlet-name>
-		<url-pattern>/getallorders</url-pattern>
-	</servlet-mapping>
-	
-	<servlet-mapping>
-		<servlet-name>somejsp</servlet-name>
-		<url-pattern>/somejsp</url-pattern>
+		<url-pattern>/</url-pattern>
 	</servlet-mapping>
 	
 </web-app>

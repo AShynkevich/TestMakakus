@@ -15,8 +15,18 @@ public class HelloWorldServlet extends HttpServlet {
     private OrderService orderService = new OrderService();
 
     public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        List<Order> orderList = orderService.getAll();
-        req.setAttribute("orderList", orderList);
-        getServletContext().getRequestDispatcher("/WEB-INF/jsp/getallorders.jsp").forward(req, resp);
+
+        String adress = req.getRequestURI();
+        System.out.println(adress);
+
+        if (adress.equals("/TestMakakus/")) {
+            getServletContext().getRequestDispatcher("/WEB-INF/jsp/hello.jsp").forward(req, resp);
+        } else if (adress.equals("/TestMakakus/getallorders")) {
+            List<Order> orderList = orderService.getAll();
+            req.setAttribute("orderList", orderList);
+            getServletContext().getRequestDispatcher("/WEB-INF/jsp/getallorders.jsp").forward(req, resp);
+        } else {
+            resp.sendRedirect("http://google.com");
+        }
     }
 }
