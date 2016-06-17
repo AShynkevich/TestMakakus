@@ -3,6 +3,7 @@ package com.deniel.system;
 import com.deniel.system.domain.Order;
 import com.deniel.system.ui.OrderService;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.List;
@@ -26,6 +27,8 @@ public class HelloWorldServlet extends HttpServlet {
             List<Order> orderList = orderService.getAll();
             req.setAttribute("orderList", orderList);
             getServletContext().getRequestDispatcher(MessageFormat.format(WEBINF_FMT, "getallorders")).forward(req, resp);
+        } else if (adress.contains("/css")) {
+            getServletContext().getRequestDispatcher("/css").forward(req,resp);
         } else {
             resp.sendRedirect("http://google.com");
         }
