@@ -8,12 +8,13 @@ import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.List;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class HelloWorldServlet extends HttpServlet {
+public class DispatcherServlet extends HttpServlet {
     private static final String WEBINF_FMT = "/WEB-INF/jsp/{0}.jsp";
     private OrderService orderService = new OrderService();
 
@@ -23,12 +24,13 @@ public class HelloWorldServlet extends HttpServlet {
 
         if (adress.equals("/")) {
             getServletContext().getRequestDispatcher(MessageFormat.format(WEBINF_FMT, "hello")).forward(req, resp);
-        } else if (adress.equals("/getallorders")) {
+        } else if (adress.equals("/dispatcherservlet")) {
             List<Order> orderList = orderService.getAll();
             req.setAttribute("orderList", orderList);
-            getServletContext().getRequestDispatcher(MessageFormat.format(WEBINF_FMT, "getallorders")).forward(req, resp);
-        } else if (adress.contains("/css")) {
-            getServletContext().getRequestDispatcher("/css").forward(req,resp);
+            getServletContext().getRequestDispatcher(MessageFormat.format(WEBINF_FMT, "dispatcherservlet")).forward(req, resp);
+        } else if (adress.startsWith("/static")) {
+            RequestDispatcher rd = getServletContext().getNamedDispatcher("default");
+            rd.forward(req, resp);
         } else {
             resp.sendRedirect("http://google.com");
         }
