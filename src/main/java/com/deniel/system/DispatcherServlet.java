@@ -28,10 +28,7 @@ public class DispatcherServlet extends HttpServlet {
             List<Order> orderList = orderService.getAll();
             req.setAttribute("orderList", orderList);
             getServletContext().getRequestDispatcher(MessageFormat.format(WEBINF_FMT, "dispatcherservlet")).forward(req, resp);
-        } else if (adress.startsWith("/static")) {
-            RequestDispatcher rd = getServletContext().getNamedDispatcher("default");
-            rd.forward(req, resp);
-        } else {
+        } else  {
             resp.sendRedirect("http://google.com");
         }
     }
