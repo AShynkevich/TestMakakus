@@ -6,17 +6,20 @@
 	version="3.0">
 	
 	<servlet-mapping>
-    <servlet-name>default</servlet-name>
-    <url-pattern>/static/*.css</url-pattern>
+   	 <servlet-name>default</servlet-name>
+   	 <url-pattern>*.css</url-pattern>
+   	 <url-pattern>*.js</url-pattern>
+   	 <url-pattern>*.jpg</url-pattern>
+   	 <url-pattern>*.png</url-pattern>
 	</servlet-mapping>
 
 	<servlet>
-		<servlet-name>dispatcherservlet</servlet-name>
+		<servlet-name>getallorders</servlet-name>
 		<servlet-class>com.deniel.system.DispatcherServlet</servlet-class>
 	</servlet>
 	
 	<servlet-mapping>
-		<servlet-name>dispatcherservlet</servlet-name>
+		<servlet-name>getallorders</servlet-name>
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
 	

@@ -2,9 +2,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
     <head>
-	<base href="http://localhost:8080/TestMakakus/">
 
-	<link rel="stylesheet" type="text/css" href="<c:url value="/static/css/main.css"/>"  />
+	<link rel="stylesheet" type="text/css" href="<c:url value="/css/main.css"/>"  />
         <title>
             Get All Orders
         </title>

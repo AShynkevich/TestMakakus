@@ -8,6 +8,6 @@
 	<h1>Working with Postgresql DataBase</h1>
 	</header>
     <body>
-        <a href="/TestMakakus/dispatcherservlet">Get all orders</a>
+        <a href="/TestMakakus/getallorders">Get all orders</a>
     </body>
 </html>

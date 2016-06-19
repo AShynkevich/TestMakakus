@@ -3,12 +3,10 @@ package com.deniel.system;
 import com.deniel.system.domain.Order;
 import com.deniel.system.ui.OrderService;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.List;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -24,13 +22,10 @@ public class DispatcherServlet extends HttpServlet {
 
         if (adress.equals("/")) {
             getServletContext().getRequestDispatcher(MessageFormat.format(WEBINF_FMT, "hello")).forward(req, resp);
-        } else if (adress.equals("/dispatcherservlet")) {
+        } else if (adress.equals("/getallorders")) {
             List<Order> orderList = orderService.getAll();
             req.setAttribute("orderList", orderList);
-            getServletContext().getRequestDispatcher(MessageFormat.format(WEBINF_FMT, "dispatcherservlet")).forward(req, resp);
-        } else if (adress.startsWith("/static")) {
-            RequestDispatcher rd = getServletContext().getNamedDispatcher("default");
-            rd.forward(req, resp);
+            getServletContext().getRequestDispatcher(MessageFormat.format(WEBINF_FMT, "getallorders")).forward(req, resp);
         } else {
             resp.sendRedirect("http://google.com");
         }
