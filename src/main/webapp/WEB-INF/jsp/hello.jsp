@@ -8,6 +8,7 @@
 	<h1>Working with Postgresql DataBase</h1>
 	</header>
     <body>
+		<a href="/TestMakakus/createform">Create order</a>
         <a href="/TestMakakus/getallorders">Get all orders</a>
     </body>
 </html>

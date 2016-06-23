@@ -1,12 +1,8 @@
 package com.deniel.system;
 
-import com.deniel.system.domain.Order;
-import com.deniel.system.ui.OrderService;
-
+import com.deniel.system.controllers.OrderController;
 import java.io.IOException;
 import java.text.MessageFormat;
-import java.util.List;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -14,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 public class DispatcherServlet extends HttpServlet {
     private static final String WEBINF_FMT = "/WEB-INF/jsp/{0}.jsp";
-    private OrderService orderService = new OrderService();
+    private OrderController orderController = new OrderController();
 
     public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
@@ -22,11 +18,15 @@ public class DispatcherServlet extends HttpServlet {
 
         if (adress.equals("/")) {
             getServletContext().getRequestDispatcher(MessageFormat.format(WEBINF_FMT, "hello")).forward(req, resp);
+        } else if (adress.equals("/createform")) {
+            getServletContext().getRequestDispatcher(MessageFormat.format(WEBINF_FMT, "createform")).forward(req, resp);
         } else if (adress.equals("/getallorders")) {
-            List<Order> orderList = orderService.getAll();
-            req.setAttribute("orderList", orderList);
+            orderController.getallorders(req);
             getServletContext().getRequestDispatcher(MessageFormat.format(WEBINF_FMT, "getallorders")).forward(req, resp);
-        } else {
+        } else if (adress.contains("/createorder")) {
+            orderController.create(req);
+            resp.sendRedirect("/TestMakakus/getallorders");
+        } else  {
             resp.sendRedirect("http://google.com");
         }
     }
