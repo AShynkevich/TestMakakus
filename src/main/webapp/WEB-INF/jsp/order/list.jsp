@@ -18,7 +18,7 @@
 				<th>Price</th>
 			<c:forEach var="order" items="${orderList}">
 				<tr><td><c:out value="${order.id}"/></td><td><c:out value="${order.orderName}"/></td>
-				<td><c:out value="${order.price}"/></td><td><c:out value="${order.amount}"/></td></tr>
+				<td><c:out value="${order.amount}"/></td><td><c:out value="${order.price}"/></td></tr>
 			</c:forEach>
 		</table>
 		<a href="/TestMakakus/">Return</a>

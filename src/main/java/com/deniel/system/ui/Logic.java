@@ -7,7 +7,9 @@ import com.deniel.system.util.Menu;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by Deniel on 26.02.2016.
@@ -68,7 +70,7 @@ public class Logic {
 
     private void makeOrder() {
         System.out.println("Make order");
-        orderService.createOrder();
+        orderService.createOrder(inputOrder(false));
     }
 
     private void loadOrders() {
@@ -112,15 +114,40 @@ public class Logic {
         } else {
             System.out.println(orders);
             String id = menu.inputOrderId();
-            Order selectedOrder = orderService.findById(id);
+            Order order = inputOrder(true);
+            order.setId(id);
 
-            if (selectedOrder.getId() == null) {
-                System.out.println("Order not found!");
-            } else {
-                orderService.updateOrder(selectedOrder);
+            if (orderService.findById(id) != null) {
+                orderService.updateOrder(order);
                 System.out.println("Order updated!");
+            } else {
+                LOGGER.error("Order not found!");
+                System.out.println("Order not found!");
             }
         }
+    }
+
+    public Order inputOrder(boolean isUpdate) {
+        Order order = new Order();
+
+        if (!isUpdate) {
+            LOGGER.info("Setting random ID.");
+            order.setId(UUID.randomUUID().toString());
+        }
+
+        String name = InputUtils.getValidString("Input order name: ", isUpdate);
+        LOGGER.info("Setting order name.");
+        order.setOrderName(name);
+
+        Integer value = InputUtils.getInteger("Input amount [example: 50; 2]: ", isUpdate);
+        LOGGER.info("Setting order amount.");
+        order.setAmount(value);
+
+        BigDecimal validString = InputUtils.getBigDecimal("Input price [example: 30; 20.5]: ", isUpdate);
+        LOGGER.info("Setting order price.");
+        order.setPrice(validString);
+
+        return order;
     }
 }
 

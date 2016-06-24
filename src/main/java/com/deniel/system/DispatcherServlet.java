@@ -18,14 +18,14 @@ public class DispatcherServlet extends HttpServlet {
 
         if (adress.equals("/")) {
             getServletContext().getRequestDispatcher(MessageFormat.format(WEBINF_FMT, "hello")).forward(req, resp);
-        } else if (adress.equals("/createform")) {
-            getServletContext().getRequestDispatcher(MessageFormat.format(WEBINF_FMT, "createform")).forward(req, resp);
-        } else if (adress.equals("/getallorders")) {
+        } else if (adress.equals("/order/createform")) {
+            getServletContext().getRequestDispatcher(MessageFormat.format(WEBINF_FMT, "/order/createform")).forward(req, resp);
+        } else if (adress.equals("/order/list")) {
             orderController.getallorders(req);
-            getServletContext().getRequestDispatcher(MessageFormat.format(WEBINF_FMT, "getallorders")).forward(req, resp);
-        } else if (adress.contains("/createorder")) {
+            getServletContext().getRequestDispatcher(MessageFormat.format(WEBINF_FMT, "/order/list")).forward(req, resp);
+        } else if (adress.contains("order/create")) {
             orderController.create(req);
-            resp.sendRedirect("/TestMakakus/getallorders");
+            resp.sendRedirect("/TestMakakus/order/list");
         } else  {
             resp.sendRedirect("http://google.com");
         }

@@ -2,67 +2,41 @@ package com.deniel.system.ui;
 
 import com.deniel.system.domain.Order;
 import com.deniel.system.repository.IOrderRepository;
-import com.deniel.system.repository.OrderRepository;
 import com.deniel.system.repository.sql.OrderRepositorySql;
-import com.deniel.system.util.InputUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.math.BigDecimal;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * Created by Deniel on 03.03.2016.
  */
 public class OrderService {
     private static final Logger LOGGER = LoggerFactory.getLogger(OrderService.class);
-
-    private Order order = new Order();
     private IOrderRepository orderRepository = new OrderRepositorySql();
 
     public OrderService() {
     }
 
-    public void inputOrder(boolean isUpdate) {
-        if (!isUpdate) {
-            LOGGER.info("Setting random ID.");
-            order.setId(UUID.randomUUID().toString());
-        }
-
-        String name = InputUtils.getValidString("Input order name: ", isUpdate);
-        LOGGER.info("Setting order name.");
-        order.setOrderName(name);
-
-        Integer value = InputUtils.getInteger("Input amount [example: 50; 2]: ", isUpdate);
-        LOGGER.info("Setting order amount.");
-        order.setAmount(value);
-
-        BigDecimal validString = InputUtils.getBigDecimal("Input price [example: 30; 20.5]: ", isUpdate);
-        LOGGER.info("Setting order price.");
-        order.setPrice(validString);
-    }
-
-    public void createOrder() {
-        inputOrder(false);
+    public void createOrder(Order order) {
         LOGGER.info("Creating order.");
         orderRepository.create(order);
     }
 
     public void updateOrder(Order selectedOrder) {
-        inputOrder(true);
+        Order order = findById(selectedOrder.getId());
 
-        if (order.getOrderName() != null) {
-            selectedOrder.setOrderName(order.getOrderName());
+        if (selectedOrder.getOrderName() != null) {
+            order.setOrderName(selectedOrder.getOrderName());
         }
-        if (order.getAmount() != null) {
-            selectedOrder.setAmount(order.getAmount());
+        if (selectedOrder.getAmount() != null) {
+            order.setAmount(selectedOrder.getAmount());
         }
-        if (order.getPrice() != null) {
-            selectedOrder.setPrice(order.getPrice());
+        if (selectedOrder.getPrice() != null) {
+            order.setPrice(selectedOrder.getPrice());
         }
         LOGGER.info("Updating order.");
-        orderRepository.update(selectedOrder);
+        orderRepository.update(order);
     }
 
     public List<Order> getAll() {
@@ -72,11 +46,7 @@ public class OrderService {
 
     public Order findById(String id) {
         LOGGER.info("Finding order by ID.");
-        if (orderRepository.read(id) != null) {
-            return orderRepository.read(id);
-        } else {
-            return new Order();
-        }
+        return orderRepository.read(id);
     }
 
     public boolean deleteById(String id) {
