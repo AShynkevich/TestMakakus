@@ -19,40 +19,34 @@ public class OrderController {
     private OrderService orderService = new OrderService();
     private static final String WEBINF_FMT = "/WEB-INF/jsp/{0}.jsp";
 
-    public void performRequest(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+    public void performRequest(HttpServletRequest req, HttpServletResponse resp, String address) throws ServletException, IOException {
         if (req.getMethod().equals("POST")) {
-            doPost(req, resp);
+            doPost(req, resp, address);
         } else {
-            doGet(req, resp);
+            doGet(req, resp, address);
         }
     }
 
-    public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-        String adress = req.getRequestURI().substring(req.getContextPath().length());
-
-        if (adress.equals("/order/createform")) {
+    public void doGet(HttpServletRequest req, HttpServletResponse resp, String address) throws ServletException, IOException {
+        if (address.equals("/order/createform")) {
             req.getRequestDispatcher(MessageFormat.format(WEBINF_FMT, "/order/createform")).forward(req, resp);
-        } else if (adress.equals("/order/list")) {
+        } else if (address.equals("/order/list")) {
             getallorders(req);
             req.getRequestDispatcher(MessageFormat.format(WEBINF_FMT, "/order/list")).forward(req, resp);
-        } else if (adress.equals("/order/searchform")) {
+        } else if (address.equals("/order/searchform")) {
             getallorders(req);
             req.getRequestDispatcher(MessageFormat.format(WEBINF_FMT, "/order/searchform")).forward(req, resp);
-        } else if (adress.equals("/order/deleteform")) {
+        } else if (address.equals("/order/deleteform")) {
             getallorders(req);
             req.getRequestDispatcher(MessageFormat.format(WEBINF_FMT, "/order/deleteform")).forward(req, resp);
         }
     }
 
-    public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String adress = req.getRequestURI().substring(req.getContextPath().length());
-
-        if (adress.contains("order/create")) {
+    public void doPost(HttpServletRequest req, HttpServletResponse resp, String address) throws ServletException, IOException {
+        if (address.contains("order/create")) {
             create(req);
             resp.sendRedirect("/TestMakakus/order/list");
-        } else if (adress.equals("/order/search")) {
+        } else if (address.equals("/order/search")) {
             Order order = findById(req);
             if (order != null) {
                 req.setAttribute("order", order);
@@ -60,7 +54,7 @@ public class OrderController {
             } else {
                 req.getRequestDispatcher(MessageFormat.format(WEBINF_FMT, "/order/notfound")).forward(req, resp);
             }
-        } else if (adress.equals("/order/delete")) {
+        } else if (address.equals("/order/delete")) {
             boolean deleted = deleteById(req);
             if (deleted) {
                 getallorders(req);

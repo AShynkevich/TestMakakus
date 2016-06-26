@@ -1,6 +1,7 @@
 package com.deniel.system;
 
 import com.deniel.system.controllers.OrderController;
+
 import java.io.IOException;
 import java.text.MessageFormat;
 import javax.servlet.ServletException;
@@ -12,28 +13,22 @@ public class DispatcherServlet extends HttpServlet {
     private static final String WEBINF_FMT = "/WEB-INF/jsp/{0}.jsp";
     private OrderController orderController = new OrderController();
 
-    public void doGet (HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-        String adress = req.getRequestURI().substring(req.getContextPath().length());
-
-        if (adress.equals("/")) {
-            getServletContext().getRequestDispatcher(MessageFormat.format(WEBINF_FMT, "hello")).forward(req, resp);
-        } else if (adress.contains("/order/")) {
-            orderController.performRequest(req, resp);
-        } else  {
-            resp.sendRedirect("http://google.com");
-        }
+    public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        processRequest(req, resp);
     }
 
-    public void doPost (HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        processRequest(req, resp);
+    }
 
-        String adress = req.getRequestURI().substring(req.getContextPath().length());
+    public void processRequest(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String address = req.getRequestURI().substring(req.getContextPath().length());
 
-        if (adress.equals("/")) {
+        if (address.equals("/")) {
             getServletContext().getRequestDispatcher(MessageFormat.format(WEBINF_FMT, "hello")).forward(req, resp);
-        } else if (adress.contains("/order/")) {
-            orderController.performRequest(req, resp);
-        } else  {
+        } else if (address.contains("/order/")) {
+            orderController.performRequest(req, resp, address);
+        } else {
             resp.sendRedirect("http://google.com");
         }
     }
