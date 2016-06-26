@@ -24,4 +24,17 @@ public class DispatcherServlet extends HttpServlet {
             resp.sendRedirect("http://google.com");
         }
     }
+
+    public void doPost (HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+        String adress = req.getRequestURI().substring(req.getContextPath().length());
+
+        if (adress.equals("/")) {
+            getServletContext().getRequestDispatcher(MessageFormat.format(WEBINF_FMT, "hello")).forward(req, resp);
+        } else if (adress.contains("/order/")) {
+            orderController.performRequest(req, resp);
+        } else  {
+            resp.sendRedirect("http://google.com");
+        }
+    }
 }

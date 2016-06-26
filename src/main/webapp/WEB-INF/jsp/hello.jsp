@@ -10,5 +10,7 @@
     <body>
 		<a href="/TestMakakus/order/createform">Create order</a>
         <a href="/TestMakakus/order/list">Get all orders</a>
+		<a href="/TestMakakus/order/searchform">Find order by id</a>
+		<a href="/TestMakakus/order/deleteform">Delete order by id</a>
     </body>
 </html>
