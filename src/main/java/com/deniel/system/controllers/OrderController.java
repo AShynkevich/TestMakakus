@@ -18,6 +18,16 @@ import java.util.UUID;
 public class OrderController {
     private OrderService orderService = new OrderService();
     private static final String WEBINF_FMT = "/WEB-INF/jsp/{0}.jsp";
+    private static final String ORDER_PATH = "/order";
+    private static final String LIST_ORDERS = ORDER_PATH + "/list";
+    private static final String CREATE_FORM = ORDER_PATH + "/createform";
+    private static final String CREATE = ORDER_PATH + "/create";
+    private static final String SEARCH_FORM = ORDER_PATH + "/searchform";
+    private static final String SEARCH = ORDER_PATH + "/search";
+    private static final String SEARCH_RESULT = ORDER_PATH + "/searchresult";
+    private static final String DELETE_FORM = ORDER_PATH + "/deleteform";
+    private static final String DELETE = ORDER_PATH + "/delete";
+    private static final String NOT_FOUND = ORDER_PATH + "/notfound";
 
     public void performRequest(HttpServletRequest req, HttpServletResponse resp, String address) throws ServletException, IOException {
         if (req.getMethod().equals("POST")) {
@@ -27,45 +37,45 @@ public class OrderController {
         }
     }
 
-    public void doGet(HttpServletRequest req, HttpServletResponse resp, String address) throws ServletException, IOException {
-        if (address.equals("/order/createform")) {
-            req.getRequestDispatcher(MessageFormat.format(WEBINF_FMT, "/order/createform")).forward(req, resp);
-        } else if (address.equals("/order/list")) {
-            getallorders(req);
-            req.getRequestDispatcher(MessageFormat.format(WEBINF_FMT, "/order/list")).forward(req, resp);
-        } else if (address.equals("/order/searchform")) {
-            getallorders(req);
-            req.getRequestDispatcher(MessageFormat.format(WEBINF_FMT, "/order/searchform")).forward(req, resp);
-        } else if (address.equals("/order/deleteform")) {
-            getallorders(req);
-            req.getRequestDispatcher(MessageFormat.format(WEBINF_FMT, "/order/deleteform")).forward(req, resp);
+    private void doGet(HttpServletRequest req, HttpServletResponse resp, String address) throws ServletException, IOException {
+        if (CREATE_FORM.equals(address)) {
+            performForward(CREATE_FORM, req, resp);
+        } else if (LIST_ORDERS.equals(address)) {
+            injectAllOrders(req);
+            performForward(LIST_ORDERS, req, resp);
+        } else if (SEARCH_FORM.equals(address)) {
+            injectAllOrders(req);
+            performForward(SEARCH_FORM, req, resp);
+        } else if (DELETE_FORM.equals(address)) {
+            injectAllOrders(req);
+            performForward(DELETE_FORM, req, resp);
         }
     }
 
-    public void doPost(HttpServletRequest req, HttpServletResponse resp, String address) throws ServletException, IOException {
-        if (address.contains("order/create")) {
+    private void doPost(HttpServletRequest req, HttpServletResponse resp, String address) throws ServletException, IOException {
+        if (address.contains(CREATE)) {
             create(req);
-            resp.sendRedirect("/TestMakakus/order/list");
-        } else if (address.equals("/order/search")) {
+            performRedirect(req.getContextPath() + LIST_ORDERS, resp);
+        } else if (SEARCH.equals(address)) {
             Order order = findById(req);
             if (order != null) {
                 req.setAttribute("order", order);
-                req.getRequestDispatcher(MessageFormat.format(WEBINF_FMT, "/order/searchresult")).forward(req, resp);
+                performForward(SEARCH_RESULT, req, resp);
             } else {
-                req.getRequestDispatcher(MessageFormat.format(WEBINF_FMT, "/order/notfound")).forward(req, resp);
+                performForward(NOT_FOUND, req, resp);
             }
-        } else if (address.equals("/order/delete")) {
+        } else if (DELETE.equals(address)) {
             boolean deleted = deleteById(req);
             if (deleted) {
-                getallorders(req);
-                req.getRequestDispatcher(MessageFormat.format(WEBINF_FMT, "/order/deleteform")).forward(req, resp);
+                injectAllOrders(req);
+                performForward(DELETE_FORM, req, resp);
             } else {
-                req.getRequestDispatcher(MessageFormat.format(WEBINF_FMT, "/order/notfound")).forward(req, resp);
+                performForward(NOT_FOUND, req, resp);
             }
         }
     }
 
-    public void create(HttpServletRequest req) {
+    private void create(HttpServletRequest req) {
         Order order = new Order();
         order.setId(UUID.randomUUID().toString());
         order.setOrderName(req.getParameter("name"));
@@ -74,16 +84,24 @@ public class OrderController {
         orderService.createOrder(order);
     }
 
-    public void getallorders(HttpServletRequest req) {
+    private void injectAllOrders(HttpServletRequest req) {
         List<Order> orderList = orderService.getAll();
         req.setAttribute("orderList", orderList);
     }
 
-    public Order findById(HttpServletRequest req) {
+    private Order findById(HttpServletRequest req) {
         return orderService.findById(req.getParameter("Id"));
     }
 
-    public boolean deleteById(HttpServletRequest req) {
+    private boolean deleteById(HttpServletRequest req) {
         return orderService.deleteById(req.getParameter("Id"));
+    }
+
+    private void performForward (String address, HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException{
+        req.getRequestDispatcher(MessageFormat.format(WEBINF_FMT, address)).forward(req, resp);
+    }
+
+    private void performRedirect (String address, HttpServletResponse resp) throws IOException{
+        resp.sendRedirect(address);
     }
 }
