@@ -21,12 +21,12 @@ public class OrderController {
     private static final String ORDER_PATH = "/order";
     private static final String LIST_ORDERS = ORDER_PATH + "/list";
     private static final String CREATE_FORM = ORDER_PATH + "/createform";
-    private static final String CREATE = ORDER_PATH + "/create";
+    private static final String CREATE_ORDER_ACTION = ORDER_PATH + "/create";
     private static final String SEARCH_FORM = ORDER_PATH + "/searchform";
-    private static final String SEARCH = ORDER_PATH + "/search";
+    private static final String SEARCH_ORDER_ACTION = ORDER_PATH + "/search";
     private static final String SEARCH_RESULT = ORDER_PATH + "/searchresult";
     private static final String DELETE_FORM = ORDER_PATH + "/deleteform";
-    private static final String DELETE = ORDER_PATH + "/delete";
+    private static final String DELETE_ORDER_ACTION = ORDER_PATH + "/delete";
     private static final String NOT_FOUND = ORDER_PATH + "/notfound";
 
     public void performRequest(HttpServletRequest req, HttpServletResponse resp, String address) throws ServletException, IOException {
@@ -38,50 +38,74 @@ public class OrderController {
     }
 
     private void doGet(HttpServletRequest req, HttpServletResponse resp, String address) throws ServletException, IOException {
-        if (CREATE_FORM.equals(address)) {
-            performForward(CREATE_FORM, req, resp);
-        } else if (LIST_ORDERS.equals(address)) {
-            injectAllOrders(req);
-            performForward(LIST_ORDERS, req, resp);
+        if (LIST_ORDERS.equals(address)) {
+            getOrdersList(req, resp, address);
+        } else if (CREATE_FORM.equals(address)) {
+            getOrderCreateForm(req, resp, address);
         } else if (SEARCH_FORM.equals(address)) {
-            injectAllOrders(req);
-            performForward(SEARCH_FORM, req, resp);
+            getOrderSearchForm(req, resp, address);
         } else if (DELETE_FORM.equals(address)) {
-            injectAllOrders(req);
-            performForward(DELETE_FORM, req, resp);
+            getOrderDeleteForm(req, resp, address);
         }
     }
 
     private void doPost(HttpServletRequest req, HttpServletResponse resp, String address) throws ServletException, IOException {
-        if (address.contains(CREATE)) {
-            create(req);
-            performRedirect(req.getContextPath() + LIST_ORDERS, resp);
-        } else if (SEARCH.equals(address)) {
-            Order order = findById(req);
-            if (order != null) {
-                req.setAttribute("order", order);
-                performForward(SEARCH_RESULT, req, resp);
-            } else {
-                performForward(NOT_FOUND, req, resp);
-            }
-        } else if (DELETE.equals(address)) {
-            boolean deleted = deleteById(req);
-            if (deleted) {
-                injectAllOrders(req);
-                performForward(DELETE_FORM, req, resp);
-            } else {
-                performForward(NOT_FOUND, req, resp);
-            }
+        if (address.contains(CREATE_ORDER_ACTION)) {
+            createOrder(req, resp);
+        } else if (SEARCH_ORDER_ACTION.equals(address)) {
+            searchOrder(req, resp);
+        } else if (DELETE_ORDER_ACTION.equals(address)) {
+            deleteOrder(req,resp);
         }
     }
 
-    private void create(HttpServletRequest req) {
+    private void getOrdersList (HttpServletRequest req, HttpServletResponse resp, String address) throws ServletException, IOException{
+        injectAllOrders(req);
+        performForward(address, req, resp);
+    }
+
+    private void getOrderCreateForm (HttpServletRequest req, HttpServletResponse resp, String address) throws ServletException, IOException {
+        performForward(address, req, resp);
+    }
+
+    private void getOrderSearchForm (HttpServletRequest req, HttpServletResponse resp, String address) throws ServletException, IOException{
+        injectAllOrders(req);
+        performForward(address, req, resp);
+    }
+
+    private void getOrderDeleteForm (HttpServletRequest req, HttpServletResponse resp, String address) throws ServletException, IOException{
+        injectAllOrders(req);
+        performForward(address, req, resp);
+    }
+
+    private void createOrder(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         Order order = new Order();
         order.setId(UUID.randomUUID().toString());
         order.setOrderName(req.getParameter("name"));
         order.setAmount(Integer.parseInt(req.getParameter("amount")));
         order.setPrice(new BigDecimal(req.getParameter("price")));
         orderService.createOrder(order);
+        performRedirect(req.getContextPath() + LIST_ORDERS, resp);
+    }
+
+    private void searchOrder(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
+        Order order = findById(req);
+        if (order != null) {
+            req.setAttribute("order", order);
+            performForward(SEARCH_RESULT, req, resp);
+        } else {
+            performForward(NOT_FOUND, req, resp);
+        }
+    }
+
+    private void deleteOrder(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
+        boolean deleted = deleteById(req);
+        if (deleted) {
+            injectAllOrders(req);
+            performForward(DELETE_FORM, req, resp);
+        } else {
+            performForward(NOT_FOUND, req, resp);
+        }
     }
 
     private void injectAllOrders(HttpServletRequest req) {
