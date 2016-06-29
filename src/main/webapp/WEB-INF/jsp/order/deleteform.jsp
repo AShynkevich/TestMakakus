@@ -2,11 +2,13 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
  <head>
-  <link rel="stylesheet" type="text/css" href="<c:url value="/css/main.css"/>"  />
-  <title><b>Get All Orders</b></title>
+  <link rel="stylesheet" type="text/css" href="<c:url value="/css/main.css"/>" />
+  <title>Get All Orders</title>
  </head>
  <body>
-  <table>
+  <jsp:include page="/WEB-INF/jsp/tiles/header.jsp" flush="true"/>
+  <jsp:include page="/WEB-INF/jsp/tiles/navigator.jsp" flush="true"/>
+  <table align = center>
    <caption><b>Orders table</b></caption>
    <th>ID</th>
     <th>Name</th>
@@ -17,10 +19,11 @@
       <td><c:out value="${order.amount}"/></td><td><c:out value="${order.price}"/></td></tr>
      </c:forEach>
   </table>
-  <a href="/TestMakakus/">Return</a>  
   <form id="data" action="delete" method="post">
    <p><input placeholder="Order id" name="Id" required></p>
   </form>
   <p><button type="submit" form="data">Delete order</button></p>
+  <a href="/TestMakakus/">Return</a>  
+  <jsp:include page="/WEB-INF/jsp/tiles/footer.jsp" flush="true"/>
  </body>
 </html>
