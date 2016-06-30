@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
  <head>
- <link rel="stylesheet" type="text/css" href="<c:url value="/css/main.css"/>"  />
+  <link rel="stylesheet" type="text/css" href="<c:url value='/css/main.css' />" />
   <title>Welcome page</title>
  </head>
  <body align = center>

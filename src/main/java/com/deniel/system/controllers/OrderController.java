@@ -27,6 +27,8 @@ public class OrderController {
     private static final String SEARCH_RESULT = ORDER_PATH + "/searchresult";
     private static final String DELETE_FORM = ORDER_PATH + "/deleteform";
     private static final String DELETE_ORDER_ACTION = ORDER_PATH + "/delete";
+    private static final String UPDATE_FORM = ORDER_PATH + "/updateform";
+    private static final String UPDATE_ORDER_ACTION = ORDER_PATH + "/update";
     private static final String NOT_FOUND = ORDER_PATH + "/notfound";
 
     public void performRequest(HttpServletRequest req, HttpServletResponse resp, String address) throws ServletException, IOException {
@@ -46,6 +48,8 @@ public class OrderController {
             getOrderSearchForm(req, resp, address);
         } else if (DELETE_FORM.equals(address)) {
             getOrderDeleteForm(req, resp, address);
+        } else if (UPDATE_FORM.equals(address)) {
+            getOrderUpdateForm(req, resp, address);
         }
     }
 
@@ -56,6 +60,8 @@ public class OrderController {
             searchOrder(req, resp);
         } else if (DELETE_ORDER_ACTION.equals(address)) {
             deleteOrder(req,resp);
+        } else if (UPDATE_ORDER_ACTION.equals(address)) {
+            updateOrder(req, resp);
         }
     }
 
@@ -78,6 +84,11 @@ public class OrderController {
         performForward(address, req, resp);
     }
 
+    private void getOrderUpdateForm (HttpServletRequest req, HttpServletResponse resp, String address) throws ServletException, IOException {
+        injectAllOrders(req);
+        performForward(address, req, resp);
+    }
+
     private void createOrder(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         Order order = new Order();
         order.setId(UUID.randomUUID().toString());
@@ -93,6 +104,19 @@ public class OrderController {
         if (order != null) {
             req.setAttribute("order", order);
             performForward(SEARCH_RESULT, req, resp);
+        } else {
+            performForward(NOT_FOUND, req, resp);
+        }
+    }
+
+    private void updateOrder(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        Order order = findById(req);
+        if (order != null) {
+            order.setOrderName(req.getParameter("name"));
+            order.setAmount(Integer.parseInt(req.getParameter("amount")));
+            order.setPrice(new BigDecimal(req.getParameter("price")));
+            orderService.updateOrder(order);
+            performRedirect(req.getContextPath() + LIST_ORDERS, resp);
         } else {
             performForward(NOT_FOUND, req, resp);
         }

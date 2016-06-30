@@ -2,10 +2,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
  <head>
-  <link rel="stylesheet" type="text/css" href="<c:url value="/css/main.css"/>" />
+  <link rel="stylesheet" type="text/css" href="<c:url value='/css/main.css' />" />
   <title>Get All Orders</title>
  </head>
- <body>
+ <body align = center>
   <jsp:include page="/WEB-INF/jsp/tiles/header.jsp" flush="true"/>
   <jsp:include page="/WEB-INF/jsp/tiles/navigator.jsp" flush="true"/>
   <table align = center>
