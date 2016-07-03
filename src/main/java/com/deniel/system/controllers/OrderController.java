@@ -17,6 +17,7 @@ import java.util.UUID;
  */
 public class OrderController {
     private OrderService orderService = new OrderService();
+    ControllerValidation controllerValidation = new ControllerValidation();
     private static final String WEBINF_FMT = "/WEB-INF/jsp/{0}.jsp";
     private static final String ORDER_PATH = "/order";
     private static final String LIST_ORDERS = ORDER_PATH + "/list";
@@ -30,6 +31,7 @@ public class OrderController {
     private static final String UPDATE_FORM = ORDER_PATH + "/updateform";
     private static final String UPDATE_ORDER_ACTION = ORDER_PATH + "/update";
     private static final String NOT_FOUND = ORDER_PATH + "/notfound";
+    private static final String ERROR = ORDER_PATH + "/error";
 
     public void performRequest(HttpServletRequest req, HttpServletResponse resp, String address) throws ServletException, IOException {
         if (req.getMethod().equals("POST")) {
@@ -59,44 +61,53 @@ public class OrderController {
         } else if (SEARCH_ORDER_ACTION.equals(address)) {
             searchOrder(req, resp);
         } else if (DELETE_ORDER_ACTION.equals(address)) {
-            deleteOrder(req,resp);
+            deleteOrder(req, resp);
         } else if (UPDATE_ORDER_ACTION.equals(address)) {
             updateOrder(req, resp);
         }
     }
 
-    private void getOrdersList (HttpServletRequest req, HttpServletResponse resp, String address) throws ServletException, IOException{
+    private void getOrdersList(HttpServletRequest req, HttpServletResponse resp, String address) throws ServletException, IOException {
         injectAllOrders(req);
         performForward(address, req, resp);
     }
 
-    private void getOrderCreateForm (HttpServletRequest req, HttpServletResponse resp, String address) throws ServletException, IOException {
+    private void getOrderCreateForm(HttpServletRequest req, HttpServletResponse resp, String address) throws ServletException, IOException {
         performForward(address, req, resp);
     }
 
-    private void getOrderSearchForm (HttpServletRequest req, HttpServletResponse resp, String address) throws ServletException, IOException{
+    private void getOrderSearchForm(HttpServletRequest req, HttpServletResponse resp, String address) throws ServletException, IOException {
         injectAllOrders(req);
         performForward(address, req, resp);
     }
 
-    private void getOrderDeleteForm (HttpServletRequest req, HttpServletResponse resp, String address) throws ServletException, IOException{
+    private void getOrderDeleteForm(HttpServletRequest req, HttpServletResponse resp, String address) throws ServletException, IOException {
         injectAllOrders(req);
         performForward(address, req, resp);
     }
 
-    private void getOrderUpdateForm (HttpServletRequest req, HttpServletResponse resp, String address) throws ServletException, IOException {
+    private void getOrderUpdateForm(HttpServletRequest req, HttpServletResponse resp, String address) throws ServletException, IOException {
         injectAllOrders(req);
         performForward(address, req, resp);
     }
 
-    private void createOrder(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    private void createOrder(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String name = req.getParameter("name");
+        String amount = req.getParameter("amount");
+        String price = req.getParameter("price");
+        String validationResult = controllerValidation.validCreating(name, amount, price);
         Order order = new Order();
-        order.setId(UUID.randomUUID().toString());
-        order.setOrderName(req.getParameter("name"));
-        order.setAmount(Integer.parseInt(req.getParameter("amount")));
-        order.setPrice(new BigDecimal(req.getParameter("price")));
-        orderService.createOrder(order);
-        performRedirect(req.getContextPath() + LIST_ORDERS, resp);
+        if (validationResult.equals("OK")) {
+            order.setId(UUID.randomUUID().toString());
+            order.setOrderName(name);
+            order.setAmount(Integer.parseInt(amount));
+            order.setPrice(new BigDecimal(price));
+            orderService.createOrder(order);
+            performRedirect(req.getContextPath() + LIST_ORDERS, resp);
+        } else {
+            req.setAttribute("message", validationResult);
+            performForward(ERROR, req, resp);
+        }
     }
 
     private void searchOrder(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
@@ -110,13 +121,21 @@ public class OrderController {
     }
 
     private void updateOrder(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String name = req.getParameter("name");
+        String amount = req.getParameter("amount");
+        String price = req.getParameter("price");
         Order order = findById(req);
+        String validationResult = controllerValidation.validUpdating(amount, price);
         if (order != null) {
-            order.setOrderName(req.getParameter("name"));
-            order.setAmount(Integer.parseInt(req.getParameter("amount")));
-            order.setPrice(new BigDecimal(req.getParameter("price")));
-            orderService.updateOrder(order);
-            performRedirect(req.getContextPath() + LIST_ORDERS, resp);
+            order.setOrderName(name);
+            if (validationResult.equals("OK")) {
+                order.setAmount(Integer.parseInt(amount));
+                order.setPrice(new BigDecimal(price));
+                orderService.updateOrder(order);
+                performRedirect(req.getContextPath() + LIST_ORDERS, resp);
+            } else
+                req.setAttribute("message", validationResult);
+            performForward(ERROR, req, resp);
         } else {
             performForward(NOT_FOUND, req, resp);
         }
@@ -145,11 +164,11 @@ public class OrderController {
         return orderService.deleteById(req.getParameter("Id"));
     }
 
-    private void performForward (String address, HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException{
+    private void performForward(String address, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.getRequestDispatcher(MessageFormat.format(WEBINF_FMT, address)).forward(req, resp);
     }
 
-    private void performRedirect (String address, HttpServletResponse resp) throws IOException{
+    private void performRedirect(String address, HttpServletResponse resp) throws IOException {
         resp.sendRedirect(address);
     }
 }

@@ -15,7 +15,6 @@ import java.util.regex.Pattern;
  */
 public final class InputUtils {
     private static final Logger LOGGER = LoggerFactory.getLogger(InputUtils.class);
-
     private static final String ONLY_NUMBER_PATTERN = "\\d+";
     private static final String FLOAT_PATTERN = "\\d+(\\.\\d*)?";
     private static final String STRING_PATTERN = "\\w+";

@@ -8,8 +8,7 @@
  <body align = center>
   <jsp:include page="/WEB-INF/jsp/tiles/header.jsp" flush="true"/>
   <jsp:include page="/WEB-INF/jsp/tiles/navigator.jsp" flush="true"/>
-  <p><b>Order not found!</b></p>
-  <a href="/TestMakakus/">Return</a>
+  <p><b><c:out value="${message}"/></b></p>
   <jsp:include page="/WEB-INF/jsp/tiles/footer.jsp" flush="true"/>
  </body>
 </html>
