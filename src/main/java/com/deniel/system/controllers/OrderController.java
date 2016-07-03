@@ -2,6 +2,7 @@ package com.deniel.system.controllers;
 
 import com.deniel.system.domain.Order;
 import com.deniel.system.ui.OrderService;
+import com.deniel.system.ui.validation.AbstractValidity;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -15,7 +16,7 @@ import java.util.UUID;
 /**
  * Created by DenielNote on 23.06.2016.
  */
-public class OrderController {
+public class OrderController extends AbstractValidity {
     private OrderService orderService = new OrderService();
     ControllerValidation controllerValidation = new ControllerValidation();
     private static final String WEBINF_FMT = "/WEB-INF/jsp/{0}.jsp";
