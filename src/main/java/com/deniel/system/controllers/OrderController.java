@@ -3,6 +3,7 @@ package com.deniel.system.controllers;
 import com.deniel.system.domain.Order;
 import com.deniel.system.ui.OrderService;
 import com.deniel.system.ui.validation.AbstractValidity;
+import com.deniel.system.ui.validation.StringEmptyValidator;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -17,8 +18,9 @@ import java.util.UUID;
  * Created by DenielNote on 23.06.2016.
  */
 public class OrderController extends AbstractValidity {
-    private OrderService orderService = new OrderService();
-    ControllerValidation controllerValidation = new ControllerValidation();
+    public static final String NAME_PARAMETER = "name";
+    public static final String AMOUNT_PARAMETER = "amount";
+    public static final String PRICE_PARAMETER = "price";
     private static final String WEBINF_FMT = "/WEB-INF/jsp/{0}.jsp";
     private static final String ORDER_PATH = "/order";
     private static final String LIST_ORDERS = ORDER_PATH + "/list";
@@ -33,6 +35,9 @@ public class OrderController extends AbstractValidity {
     private static final String UPDATE_ORDER_ACTION = ORDER_PATH + "/update";
     private static final String NOT_FOUND = ORDER_PATH + "/notfound";
     private static final String ERROR = ORDER_PATH + "/error";
+
+    private OrderService orderService = new OrderService();
+    private ControllerValidation controllerValidation = new ControllerValidation();
 
     public void performRequest(HttpServletRequest req, HttpServletResponse resp, String address) throws ServletException, IOException {
         if (req.getMethod().equals("POST")) {
@@ -93,22 +98,24 @@ public class OrderController extends AbstractValidity {
     }
 
     private void createOrder(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String name = req.getParameter("name");
-        String amount = req.getParameter("amount");
-        String price = req.getParameter("price");
-        String validationResult = controllerValidation.validCreating(name, amount, price);
-        Order order = new Order();
-        if (validationResult.equals("OK")) {
-            order.setId(UUID.randomUUID().toString());
-            order.setOrderName(name);
-            order.setAmount(Integer.parseInt(amount));
-            order.setPrice(new BigDecimal(price));
-            orderService.createOrder(order);
-            performRedirect(req.getContextPath() + LIST_ORDERS, resp);
-        } else {
-            req.setAttribute("message", validationResult);
+        String name = req.getParameter(NAME_PARAMETER);
+        String amount = req.getParameter(AMOUNT_PARAMETER);
+        String price = req.getParameter(PRICE_PARAMETER);
+        List<String> errors = validate(new StringEmptyValidator(NAME_PARAMETER, name),
+                                       new StringEmptyValidator(AMOUNT_PARAMETER, amount),
+                                       new StringEmptyValidator(PRICE_PARAMETER, price));
+        if (!errors.isEmpty()) {
+            req.setAttribute("messages", errors);
             performForward(ERROR, req, resp);
+            return;
         }
+        Order order = new Order();
+        order.setId(UUID.randomUUID().toString());
+        order.setOrderName(name);
+        order.setAmount(Integer.parseInt(amount));
+        order.setPrice(new BigDecimal(price));
+        orderService.createOrder(order);
+        performRedirect(req.getContextPath() + LIST_ORDERS, resp);
     }
 
     private void searchOrder(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
